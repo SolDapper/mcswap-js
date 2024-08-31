@@ -5,8 +5,8 @@
 import BufferLayout from "@solana/buffer-layout";
 import { PublicKey, Connection, TransactionMessage, VersionedTransaction, ComputeBudgetProgram } from "@solana/web3.js";
 import bs58 from 'bs58';
-const publicKey=(property="publicKey")=>{return BufferLayout.blob(32,property);}
-const uint64=(property="uint64")=>{return BufferLayout.blob(8,property);}
+let publicKey=(property="publicKey")=>{return BufferLayout.blob(32,property);}
+let uint64=(property="uint64")=>{return BufferLayout.blob(8,property);}
 class mcswap {
     constructor() {
         this.name = "mcswap";
