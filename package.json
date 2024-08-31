@@ -1,0 +1,22 @@
+{
+  "name": "mcswap-js",
+  "version": "0.0.1",
+  "description": "mcswap-js javascript sdk for the mcswap protocol",
+  "main": "mcswap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/McDegens-DAO/mcswap-js.git"
+  },
+  "keywords": [
+    "otc"
+  ],
+  "author": "@SolDapper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/McDegens-DAO/mcswap-js/issues"
+  },
+  "homepage": "https://github.com/McDegens-DAO/mcswap-js#readme"
+}
