@@ -1,1 +1,1 @@
-# mcswap-js-sdk
+# mcswap-js
