@@ -21,12 +21,12 @@
   },
   "homepage": "https://github.com/McDegens-DAO/mcswap-js#readme",
   "dependencies": {
-      "@solana/web3.js": "^1.89.0",
-      "@metaplex-foundation/mpl-bubblegum": "^4.1.0",
-      "@solana/buffer-layout": "^4.0.1",
-      "@solana/spl-account-compression": "^0.2.1",
-      "@solana/spl-token": "^0.3.11",
-      "bn.js": "^5.2.1",
-      "bs58": "^5.0.0"
-    }
+    "@metaplex-foundation/mpl-bubblegum": "^4.1.0",
+    "@solana/buffer-layout": "^4.0.1",
+    "@solana/spl-account-compression": "^0.2.1",
+    "@solana/spl-token": "^0.3.11",
+    "@solana/web3.js": "^1.89.0",
+    "bn.js": "^5.2.1",
+    "bs58": "^5.0.0"
+  }
 }
