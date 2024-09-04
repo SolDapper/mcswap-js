@@ -1000,7 +1000,6 @@ class mcswap {
         const instructions = [reverseSwapIx];
 
         // build transaction
-        const payer = user_a_key.toString();
         const _tx_ = {};
         if(typeof _data_.blink!="undefined"&&_data_.blink===true){
             _tx_.serialize = true;              
@@ -1015,8 +1014,8 @@ class mcswap {
             _tx_.fees = true;   
         }
         _tx_.rpc = _data_.rpc;                     
-        _tx_.account = payer;             
-        _tx_.instructions = instructions;   
+        _tx_.account = user_a_key.toString();        
+        _tx_.instructions = instructions;
         _tx_.signers = false;               
         _tx_.table = false;  
         _tx_.tolerance = 1.2;               
