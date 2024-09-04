@@ -42,7 +42,7 @@ class mcswap {
             publicKey("mcdegens_treasury"),
         ]);
         this.PROGRAM_STATE_SPL = BufferLayout.struct([
-        BufferLayout.u8("is_initialized"),
+            BufferLayout.u8("is_initialized"),
             publicKey("pickle_mint"),
             uint64("fee_chips"),
             BufferLayout.u8("dev_percentage"),
