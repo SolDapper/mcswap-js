@@ -18,8 +18,8 @@ const params = {"rpc":rpc}
 // false = you're expecting a normal signable transaction
 // true = you're expecting base64 for a Blink
 params.blink = false; // (omit||default = false)
-// false = you're passing fractionalized units
-// true = you're passing decimal values
+// false = you're passing fractionalized units when creating
+// true = you're passing decimal values when creating
 params.convert = false; // (omit||default = false)
 // Fee Priority Options = VeryHigh, High, Medium, Low, Min
 params.priority = "Low"; // (omit||default = "Low")
