@@ -21,6 +21,39 @@ params.blink = true; // (omit||default = false)
 // false = you're passing fractionalized units
 // true = you're passing decimal values
 params.convert = false; // (omit||default = false)
+// Fee Priority Options = VeryHigh, High, Medium, Low, Min
+params.priority = "Low"; // (omit||default = "Low")
+```
+
+# Non-Fungible Assets
+Sell a Non-Fungible Asset for one or more of the following:
+
+• A NFT of the same Standard
+
+• A SPL or Token2022 Token
+
+• SOL
+
+```javascript
+params.convert = true;
+params.blink = true;
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
+params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // optional
+params.lamports = 0.0001; // optional
+params.tokenMint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // optional
+params.units = 1.0; // optional
+const tx = await mcswap.coreCreate(params);
+```
+
+Example Response
+```javascript
+{
+  status: 'ok',
+  message: 'success',
+  transaction: 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAFDGFbWFPwChAAIrtoWArBs6Se/MageZ+Cttqxq7jzQ0gTjQOnQpEIn0twCuI+PIRR9bpEjLSo/5gShDaaHNbr9Q12zXUl4xmWuJwDltYE/d68ZpfawHuqnnkh0LYbGHERAjzp0mdpvAgCG4...'
+}
 ```
 
 # Fungible Assets
@@ -47,17 +80,3 @@ Example Response
   transaction: 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAFDGFbWFPwChAAIrtoWArBs6Se/MageZ+Cttqxq7jzQ0gTjQOnQpEIn0twCuI+PIRR9bpEjLSo/5gShDaaHNbr9Q12zXUl4xmWuJwDltYE/d68ZpfawHuqnnkh0LYbGHERAjzp0mdpvAgCG4...'
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-# Non-Fungible Assets
-Sell a Non-Fungible Asset
