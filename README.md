@@ -36,7 +36,7 @@ Sell a Non-Fungible Asset for one or more of the following:
 ```javascript
 params.blink = true;
 params.convert = true;
-params.priority = "Medium"; // optional
+params.priority = "Medium";
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
@@ -50,9 +50,9 @@ const tx = await mcswap.coreCreate(params);
 ### Cancel Contract (only the seller can cancel)
 ```javascript
 params.blink = true;
-params.priority = "Medium"; // optional
-params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
-params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
+params.priority = "Medium";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
 params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
 const tx = await mcswap.coreCancel(params);
 ```
@@ -60,23 +60,23 @@ const tx = await mcswap.coreCancel(params);
 ### Execute Contract (only the buyer can execute)
 ```javascript
 params.blink = true;
-params.priority = "Medium"; // optional
-params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
-params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
+params.priority = "Medium";
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
 params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
 const tx = await mcswap.coreExecute(params);
 ```
 
 ### Fetch Sent Contracts
 ```javascript
-params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
+params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required seller wallet
 params.display = true; // optional convert units to decimals in response
 const coreSent = await mcswap.coreSent(params);
 ```
 
 ### Fetch Received Contracts
 ```javascript
-params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
+params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required buyer wallet
 params.display = true; // optional convert units to decimals in response
 const coreReceived = await mcswap.coreReceived(params);
 ```
@@ -108,8 +108,8 @@ const tx = await mcswap.splCreate(params);
 ```javascript
 params.blink = true;
 params.priority = "Medium";
-params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
-params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
 const tx = await mcswap.splCancel(params);
 ```
 
@@ -117,7 +117,7 @@ const tx = await mcswap.splCancel(params);
 ```javascript
 params.blink = true;
 params.priority = "Medium";
-params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
-params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
 const tx = await mcswap.splExecute(params);
 ```
