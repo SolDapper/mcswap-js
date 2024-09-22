@@ -38,7 +38,8 @@ params.token4Mint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // optional/
 params.token4Amount = 100000; // optional/omit
 const tx = await mcswap.splCreate(params);
 ```
-## Example Response
+
+Example Response
 ```javascript
 {
   status: 'ok',
