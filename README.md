@@ -34,7 +34,7 @@ Sell a Non-Fungible Asset for one or more of the following:
 
 • SOL
 
-Create Contract
+### Create Contract
 ```javascript
 params.blink = true; // optional
 params.convert = true; // optional
@@ -49,7 +49,7 @@ params.units = 1.0; // optional
 const tx = await mcswap.coreCreate(params);
 ```
 
-Cancel Contract (only the seller can cancel)
+### Cancel Contract (only the seller can cancel)
 ```javascript
 params.blink = true;
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
@@ -58,7 +58,7 @@ params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no
 const tx = await mcswap.coreCancel(params);
 ```
 
-Execute Contract (only the buyer can execute)
+### Execute Contract (only the buyer can execute)
 ```javascript
 params.blink = true;
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
@@ -67,14 +67,14 @@ params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no
 const tx = await mcswap.coreExecute(params);
 ```
 
-Fetch Sent Contracts
+### Fetch Sent Contracts
 ```javascript
 params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
 params.display = true; // optional convert units to decimals in response
 const coreSent = await mcswap.coreSent(params);
 ```
 
-Fetch Received Contracts
+### Fetch Received Contracts
 ```javascript
 params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
 params.display = true; // optional convert units to decimals in response
