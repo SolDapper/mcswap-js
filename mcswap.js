@@ -3358,6 +3358,19 @@ class mcswap {
         return _error_;
     }
     }
+    async send(_data_){
+    try{
+        const connection = new Connection(_data_.rpc,"confirmed");
+        const signature = await connection.sendRawTransaction(_data_.tx.serialize(),{skipPreflight:true,maxRetries:0});
+        return signature;
+    }
+    catch(err){
+        const _error_ = {}
+        _error_.status="error";
+        _error_.message=err;
+        return _error_;
+    }
+    }
     async status(cluster,sig,max=10,int=4){
         return await new Promise(resolve => {
             let start = 1;
