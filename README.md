@@ -24,7 +24,7 @@ params.convert = false; // (omit||default = false)
 ```
 
 # Fungible Assets
-Sell a Fungible Asset
+Sell one or two Fungible Assets for one or two other Fungible Assets
 ```javascript
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.buyer = "ACgZcmgmAnMDxXxZUo9Zwg2PS6WQLXy63JnnLmJFYxZZ"; // required
