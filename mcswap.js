@@ -148,22 +148,23 @@ class mcswap {
     async splCreate(_data_){
     try{
 
+
         if(typeof _data_.convert!="undefined"&&_data_.convert===true){
             if(typeof _data_.token1Amount!="undefined"&&_data_.token1Amount>0){
-                const amount = this.convert({"rpc":_data_.rpc,"amount":_data_.token1Amount,"mint":_data_.token1Mint});
-                _data_.token1Amount = parseInt(amount.data);
+                const amount_1 = this.convert({"rpc":_data_.rpc,"amount":_data_.token1Amount,"mint":_data_.token1Mint});
+                _data_.token1Amount = parseInt(amount_1.data);
             }
             if(typeof _data_.token2Amount!="undefined"&&_data_.token2Amount>0){
-                const amount = this.convert({"rpc":_data_.rpc,"amount":_data_.token2Amount,"mint":_data_.token2Mint});
-                _data_.token2Amount = parseInt(amount.data);
+                const amount_2 = this.convert({"rpc":_data_.rpc,"amount":_data_.token2Amount,"mint":_data_.token2Mint});
+                _data_.token2Amount = parseInt(amount_2.data);
             }
             if(typeof _data_.token3Amount!="undefined"&&_data_.token3Amount>0){
-                const amount = this.convert({"rpc":_data_.rpc,"amount":_data_.token3Amount,"mint":_data_.token3Mint});
-                _data_.token3Amount = parseInt(amount.data);
+                const amount_3 = this.convert({"rpc":_data_.rpc,"amount":_data_.token3Amount,"mint":_data_.token3Mint});
+                _data_.token3Amount = parseInt(amount_3.data);
             }
             if(typeof _data_.token4Amount!="undefined"&&_data_.token4Amount>0){
-                const amount = this.convert({"rpc":_data_.rpc,"amount":_data_.token4Amount,"mint":_data_.token4Mint});
-                _data_.token4Amount = parseInt(amount.data);
+                const amount_4 = this.convert({"rpc":_data_.rpc,"amount":_data_.token4Amount,"mint":_data_.token4Mint});
+                _data_.token4Amount = parseInt(amount_4.data);
             }
         } 
 
