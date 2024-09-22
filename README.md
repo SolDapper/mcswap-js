@@ -3,8 +3,6 @@ Javascript SDK for the McSwap OTC Protocol
 
 Every OTC Contract has a "seller" and a "buyer"
 
-A "seller" can not sell SOL, but can request it from the "buyer".
-
 # Import SDK
 (npm option coming soon)
 ```javascript
@@ -36,8 +34,8 @@ Sell a Non-Fungible Asset for one or more of the following:
 
 ### Create Contract
 ```javascript
-params.blink = true; // optional
-params.convert = true; // optional
+params.blink = true;
+params.convert = true;
 params.priority = "Medium"; // optional
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
@@ -52,6 +50,7 @@ const tx = await mcswap.coreCreate(params);
 ### Cancel Contract (only the seller can cancel)
 ```javascript
 params.blink = true;
+params.priority = "Medium"; // optional
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
 params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
@@ -61,6 +60,7 @@ const tx = await mcswap.coreCancel(params);
 ### Execute Contract (only the buyer can execute)
 ```javascript
 params.blink = true;
+params.priority = "Medium"; // optional
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
 params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
@@ -83,7 +83,12 @@ const coreReceived = await mcswap.coreReceived(params);
 
 # Fungible Assets
 Sell one or two Fungible Assets for one or two other Fungible Assets
+
+A "seller" can not sell SOL, but can request it from the "buyer"
 ```javascript
+params.blink = true;
+params.convert = false;
+params.priority = "Medium";
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.buyer = "ACgZcmgmAnMDxXxZUo9Zwg2PS6WQLXy63JnnLmJFYxZZ"; // required
 params.token1Mint = "CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo"; // required
