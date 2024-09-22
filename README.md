@@ -85,6 +85,8 @@ const coreReceived = await mcswap.coreReceived(params);
 Sell one or two Fungible Assets for one or two other Fungible Assets
 
 A "seller" can not sell SOL, but can request it from the "buyer"
+
+### Create Contract
 ```javascript
 params.blink = true;
 params.convert = false;
@@ -100,4 +102,22 @@ params.token3Amount = 1000000; // required
 params.token4Mint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // optional/omit
 params.token4Amount = 100000; // optional/omit
 const tx = await mcswap.splCreate(params);
+```
+
+### Cancel Contract (only the seller can cancel)
+```javascript
+params.blink = true;
+params.priority = "Medium";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
+const tx = await mcswap.splCancel(params);
+```
+
+### Execute Contract (only the buyer can execute)
+```javascript
+params.blink = true;
+params.priority = "Medium";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
+const tx = await mcswap.splExecute(params);
 ```
