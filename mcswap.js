@@ -383,7 +383,6 @@ class mcswap {
         let token1;
         if(extensionTypes_1.includes(1)){
           token1 = token1Amount - (token1Amount * (transferFeeBasisPoints_1 / 100 / 100));
-        //   console.log("token1LessFee ", Math.trunc(token1));
           for ( index = 0; index < byteArray.length; index ++ ) {
             byte = token1 & 0xff;
             byteArray [ index ] = byte;
@@ -392,7 +391,6 @@ class mcswap {
         }
         else{
           token1 = token1Amount;
-        //   console.log("token1 ", Math.trunc(token1));
           for (index = 0; index < byteArray.length; index++) {
             byte = token1 & 0xff;
             byteArray[index] = byte;
@@ -409,7 +407,6 @@ class mcswap {
         let token2;
         if(extensionTypes_2.includes(1)){
           token2 = token2Amount - (token2Amount * (transferFeeBasisPoints_2 / 100 / 100));
-          console.log("token2LessFee ", Math.trunc(token2));
           for ( index = 0; index < byteArray.length; index ++ ) {
             byte = token2 & 0xff;
             byteArray [ index ] = byte;
@@ -418,7 +415,6 @@ class mcswap {
         }
         else{
           token2 = token2Amount;
-        //   console.log("token2 ", Math.trunc(token2));
           for (index = 0; index < byteArray.length; index++) {
             byte = token2 & 0xff;
             byteArray[index] = byte;
@@ -500,16 +496,16 @@ class mcswap {
         // instructions array ****************************************************************
         let instructions = null;
         if (token2Amount > 0) {
-          if(createToken3ATA==true && createToken3ATA==true){console.log("1");instructions=[createToken3ATAIx,createToken4ATAIx,initializeSwapIx];} 
-          else if(createToken3ATA==true){console.log("2");instructions=[createToken3ATAIx,initializeSwapIx];} 
-          else if(createToken4ATA==true){console.log("3");instructions=[createToken4ATAIx,initializeSwapIx];} 
-          else{console.log("4");instructions=[initializeSwapIx];}
+          if(createToken3ATA==true && createToken3ATA==true){instructions=[createToken3ATAIx,createToken4ATAIx,initializeSwapIx];} 
+          else if(createToken3ATA==true){instructions=[createToken3ATAIx,initializeSwapIx];} 
+          else if(createToken4ATA==true){instructions=[createToken4ATAIx,initializeSwapIx];} 
+          else{instructions=[initializeSwapIx];}
         } 
         else {
-          if(createToken3ATA==true && createToken4ATA==true){console.log("5");instructions=[createToken3ATAIx,createToken4ATAIx,initializeSwapIx];} 
-          else if(createToken3ATA==true){console.log("6");instructions=[createToken3ATAIx,initializeSwapIx];} 
-          else if(createToken4ATA==true){console.log("7");instructions=[createToken4ATAIx,initializeSwapIx];} 
-          else {console.log("8");instructions=[initializeSwapIx]}
+          if(createToken3ATA==true && createToken4ATA==true){instructions=[createToken3ATAIx,createToken4ATAIx,initializeSwapIx];} 
+          else if(createToken3ATA==true){instructions=[createToken3ATAIx,initializeSwapIx];} 
+          else if(createToken4ATA==true){instructions=[createToken4ATAIx,initializeSwapIx];} 
+          else {instructions=[initializeSwapIx]}
         }
         // instructions array ****************************************************************
 
@@ -547,7 +543,6 @@ class mcswap {
     async splExecute(_data_){
     try{
         if(typeof _data_.priority=="undefined"||_data_.priority===false){_data_.priority=this.PRIORITY;}
-        // console.log("Priority: "+_data_.priority);  
         const _response_ = {};
         const connection = new Connection(_data_.rpc, "confirmed");
         const user_a_key = new PublicKey(_data_.seller);
@@ -563,12 +558,6 @@ class mcswap {
         if (programState != null) {
             const encodedProgramStateData = programState.data;
             const decodedProgramStateData = this.PROGRAM_STATE_SPL.decode(encodedProgramStateData);
-            console.log("programState - is_initialized: ", decodedProgramStateData.is_initialized);
-            console.log("programState - pickle_mint: ", new PublicKey(decodedProgramStateData.pickle_mint).toString());
-            console.log("programState - fee_chips: ", new BN(decodedProgramStateData.fee_chips, 10, "le").toString());
-            console.log("programState - dev_percentage: ", new BN(decodedProgramStateData.dev_percentage, 10, "le").toString());
-            console.log("programState - dev_treasury: ", new PublicKey(decodedProgramStateData.dev_treasury).toString());
-            console.log("programState - mcdegens_treasury: ", new PublicKey(decodedProgramStateData.mcdegens_treasury).toString());
             pickleMint = new PublicKey(decodedProgramStateData.pickle_mint);
             feeChips = new BN(decodedProgramStateData.fee_chips, 10, "le");
             devTreasury = new PublicKey(decodedProgramStateData.dev_treasury);
@@ -582,7 +571,6 @@ class mcswap {
         // programState
         // swapVaultPDA
         const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("swap-vault")], new PublicKey(this.MCSWAP_SPL_PROGRAM));
-        console.log("Swap Vault PDA: ", swapVaultPDA[0].toString());
         // swapVaultPDA
         // swapState
         const SPL_STATE_PDA = PublicKey.findProgramAddressSync([Buffer.from("swap-state"), user_a_key.toBytes(), user_b_key.toBytes()], new PublicKey(this.MCSWAP_SPL_PROGRAM));
@@ -622,14 +610,9 @@ class mcswap {
         token2Amount = parseInt(token2Amount);
         token3Amount = parseInt(token3Amount);
         token4Amount = parseInt(token4Amount);
-        console.log("token1Amount", token1Amount);
-        console.log("token2Amount", token2Amount);
-        console.log("token3Amount", token3Amount);
-        console.log("token4Amount", token4Amount);
         // swapState
         // rent
         let rent = await connection.getMinimumBalanceForRentExemption(splToken.AccountLayout.span);
-        console.log("rent", rent);
         // rent
         // providerPickleATA
         let providerPickleATA = await splToken.getAssociatedTokenAddress(new PublicKey(this.PIKL_MINT_ADDR),user_b_key,false,splToken.TOKEN_PROGRAM_ID,splToken.ASSOCIATED_TOKEN_PROGRAM_ID,);
@@ -647,7 +630,6 @@ class mcswap {
         let SPL_PROGRAM_3 = splToken.TOKEN_PROGRAM_ID;
         if(token3Amount > 0){
         if(token3Mint.toString() == "11111111111111111111111111111111"){
-            console.log("Token 3 is SOL");
         }
         else{
             response = await fetch(_data_.rpc, {method: 'POST',headers: {"Content-Type": "application/json"},
@@ -659,10 +641,8 @@ class mcswap {
             spl_amount = parseInt(token3Amount);
             if(typeof meta_data.result.mint_extensions != "undefined"){
             SPL_PROGRAM_3 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Token 3 is using Token 2022");
             }
             else{
-            console.log("Token 3 is using SPL Token");
             }
         }
         }
@@ -675,7 +655,6 @@ class mcswap {
             SPL_PROGRAM_3,
             splToken.ASSOCIATED_TOKEN_PROGRAM_ID,
         );
-        console.log("Token 3 Amount", parseInt(token3Amount.toString()));
         }
         // token 3 **************************************************************
         // token 4 **************************************************************
@@ -690,10 +669,6 @@ class mcswap {
         spl_amount = parseInt(token4Amount);
         if(typeof meta_data.result.mint_extensions != "undefined"){
             SPL_PROGRAM_4 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Token 4 is using Token 2022");
-        }
-        else{
-            console.log("Token 4 is using SPL Token");
         }
         }
         let providerToken4ATA = providerToken3ATA;
@@ -705,7 +680,6 @@ class mcswap {
             SPL_PROGRAM_4,
             splToken.ASSOCIATED_TOKEN_PROGRAM_ID,
         );
-        console.log("Token 4 Amount", parseInt(token4Amount.toString()));
         }
         // token 4 **************************************************************
         // token 1 **************************************************************
@@ -720,10 +694,6 @@ class mcswap {
         spl_amount = parseInt(token1Amount);
         if(typeof meta_data.result.mint_extensions != "undefined"){
             SPL_PROGRAM_1 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Token 1 is using Token 2022");
-        }
-        else{
-            console.log("Token 1 is using SPL Token");
         }
         }
         let createToken1ATA = null;
@@ -750,7 +720,6 @@ class mcswap {
         else{
         createToken1ATA = false;
         }
-        console.log("Token 1 Amount", parseInt(token1Amount.toString()));
         // token 1 **************************************************************
         // token 2 **************************************************************
         let token2ATA = initializer;
@@ -767,10 +736,6 @@ class mcswap {
         spl_amount = parseInt(token2Amount);
         if(typeof meta_data.result.mint_extensions != "undefined"){
             SPL_PROGRAM_2 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Token 2 is using Token 2022");
-        }
-        else{
-            console.log("Token 2 is using SPL Token");
         }
         token2ATA = await splToken.getAssociatedTokenAddress(
             token2Mint,
@@ -794,7 +759,6 @@ class mcswap {
         else{
             createToken2ATA = false;
         }
-        console.log("Token 2 Amount", parseInt(token2Amount.toString()));
         }
         // token 2 **************************************************************
         // token 3 **************************************************************
@@ -862,19 +826,15 @@ class mcswap {
         // instructions
         let instructions = [];
         if (createToken1ATA == true && createToken2ATA) {
-            console.log("ix set 1");
             instructions = [createToken1ATAIx,createToken2ATAIx,swapTokensIx];
         } 
         else if (createToken1ATA) {
-            console.log("ix set 2");
             instructions = [createToken1ATAIx,swapTokensIx];
         } 
         else if (createToken2ATA) {
-            console.log("ix set 3");
             instructions = [createToken2ATAIx,swapTokensIx];
         } 
         else {
-            console.log("ix set 4");
             instructions = [swapTokensIx];
         }
         // instructions
@@ -947,11 +907,6 @@ class mcswap {
         tempToken1Account = new PublicKey(decodedSwapStateData.temp_token1_account);
         token2Mint = new PublicKey(decodedSwapStateData.token2_mint);
         tempToken2Account = new PublicKey(decodedSwapStateData.temp_token2_account);
-        
-        console.log("token1Amount", token1Amount);
-        console.log("token1Mint", token1Mint.toString());
-        console.log("token2Amount", token2Amount);
-        console.log("token2Mint", token2Mint.toString());
 
         let token1ATA;
         let SPL_PROGRAM_1 = splToken.TOKEN_PROGRAM_ID;
@@ -964,10 +919,6 @@ class mcswap {
             spl_amount = parseInt(token1Amount);
             if(typeof meta_data.result.mint_extensions != "undefined"){
                 SPL_PROGRAM_1 = splToken.TOKEN_2022_PROGRAM_ID;
-                console.log("Token 1 is using Token 2022");
-            }
-            else{
-                console.log("Token 1 is using SPL Token");
             }
             token1ATA = await splToken.getAssociatedTokenAddress(token1Mint,user_a_key,false,SPL_PROGRAM_1,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
         }
@@ -983,10 +934,6 @@ class mcswap {
             spl_amount = parseInt(token2Amount);
             if(typeof meta_data.result.mint_extensions != "undefined"){
                 SPL_PROGRAM_2 = splToken.TOKEN_2022_PROGRAM_ID;
-                console.log("Token 2 is using Token 2022");
-            }
-            else{
-                console.log("Token 2 is using SPL Token");
             }
             token2ATA = await splToken.getAssociatedTokenAddress(token2Mint,user_a_key,false,SPL_PROGRAM_2,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
         }
@@ -1220,10 +1167,6 @@ class mcswap {
         meta_data = await response.json();
         if(typeof meta_data.result.mint_extensions != "undefined"){
             PROGRAM_1 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Seller NFT is Token 2022");
-        }
-        else{
-            console.log("Seller NFT is SPL Token");
         }
         // swapVaultATA
         const swapVaultATA = await splToken.getAssociatedTokenAddress(new PublicKey(mint),swapVaultPDA[0],true,PROGRAM_1,splToken.ASSOCIATED_TOKEN_PROGRAM_ID,);        
@@ -1240,10 +1183,6 @@ class mcswap {
         meta_data = await response.json();
         if(typeof meta_data.result.mint_extensions != "undefined"){
             PROGRAM_2 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Buyer NFT is Token 2022");
-        }
-        else{
-            console.log("Buyer NFT is SPL Token");
         }
         // swapMintATA
         let createSwapMintATA = false;
@@ -1272,10 +1211,6 @@ class mcswap {
             meta_data = await response.json();
             if(typeof meta_data.result.mint_extensions != "undefined"){
                 PROGRAM_3 = splToken.TOKEN_2022_PROGRAM_ID;
-                console.log("Buyer Token is Token 2022");
-            }
-            else{
-                console.log("Buyer Token is SPL Token");
             }
             swapTokenATA = await splToken.getAssociatedTokenAddress(swapTokenMint,new PublicKey(_data_.seller),false,PROGRAM_3,splToken.ASSOCIATED_TOKEN_PROGRAM_ID,);
             let response_b = null;
@@ -1341,7 +1276,6 @@ class mcswap {
         let instructions = null;
         if (isSwap == true) {
           if (createSwapMintATA == true && createSwapTokenATA == true) {
-            console.log("ix 1");
             instructions = [
               createSwapVaultATAIx,
               createSwapMintATAIx,
@@ -1350,7 +1284,6 @@ class mcswap {
             ];
           } 
           else if (createSwapMintATA == true) {
-            console.log("ix 2");
             instructions = [
               createSwapVaultATAIx,
               createSwapMintATAIx,
@@ -1358,7 +1291,6 @@ class mcswap {
             ];
           }
           else if (createSwapTokenATA == true) {
-            console.log("ix 3");
             instructions = [
               createSwapVaultATAIx,
               createSwapTokenATAIx,
@@ -1366,7 +1298,6 @@ class mcswap {
             ];
           } 
           else {
-            console.log("ix 4");
             instructions = [
               createSwapVaultATAIx,
               initializeSwapIx
@@ -1375,7 +1306,6 @@ class mcswap {
         } 
         else {
           if (createSwapTokenATA == true) {
-            console.log("ix 5");
             instructions = [
               createSwapVaultATAIx,
               createSwapTokenATAIx,
@@ -1383,7 +1313,6 @@ class mcswap {
             ];
           }
           else {
-            console.log("ix 6");
             instructions = [
               createSwapVaultATAIx,
               initializeSwapIx
@@ -1411,7 +1340,6 @@ class mcswap {
         _tx_.table = [lookupTableAccount];  
         _tx_.tolerance = 1.2;                     
         _tx_.priority = _data_.priority; 
-        console.log("ok"); 
         return await this.tx(_tx_);
         // build transaction
 
@@ -1462,10 +1390,6 @@ class mcswap {
         meta_data = await response.json();
         if(typeof meta_data.result.mint_extensions != "undefined"){
             ASSET_PROGRAM_1 = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Seller NFT is Token 2022");
-        }
-        else{
-            console.log("Seller NFT is SPL Token");
         }
         let createInitializerMintATA = false;
         let createInitializerMintATAIx = null;
@@ -1489,10 +1413,6 @@ class mcswap {
             meta_data = await response.json();
             if(typeof meta_data.result.mint_extensions != "undefined"){
                 ASSET_PROGRAM_2 = splToken.TOKEN_2022_PROGRAM_ID;
-                console.log("Buyer NFT is Token 2022");
-            }
-            else{
-                console.log("Buyer NFT is SPL Token");
             }
             providerSwapMintATA = await splToken.getAssociatedTokenAddress(new PublicKey(swapMint),new PublicKey(_data_.buyer),false,ASSET_PROGRAM_2,splToken.ASSOCIATED_TOKEN_PROGRAM_ID,);   
             initializerSwapMintATA = await splToken.getAssociatedTokenAddress(new PublicKey(swapMint),initializer,false,ASSET_PROGRAM_2,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
@@ -1511,10 +1431,6 @@ class mcswap {
             meta_data = await response.json();
             if(typeof meta_data.result.mint_extensions != "undefined"){
                 ASSET_PROGRAM_3 = splToken.TOKEN_2022_PROGRAM_ID;
-                console.log("Buyer Token is Token 2022");
-            }
-            else{
-                console.log("Buyer Token is SPL Token");
             }
             providerTokenATA = await splToken.getAssociatedTokenAddress(swapTokenMint,new PublicKey(_data_.buyer),false,ASSET_PROGRAM_3,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
             initializerTokenATA = await splToken.getAssociatedTokenAddress(swapTokenMint,initializer,false,ASSET_PROGRAM_3,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
@@ -1550,8 +1466,8 @@ class mcswap {
         const lookupTable = new PublicKey(this.NFT_STATIC_ALT);  
         const lookupTableAccount = await connection.getAddressLookupTable(lookupTable).then((res) => res.value);
         let instructions;
-        if(createInitializerMintATA == true){console.log("ix 1");instructions=[createInitializerMintATAIx,swapNFTsIx];} 
-        else{console.log("ix 2");instructions=[swapNFTsIx];}
+        if(createInitializerMintATA == true){instructions=[createInitializerMintATAIx,swapNFTsIx];} 
+        else{instructions=[swapNFTsIx];}
         // build transaction
         const _tx_ = {};
         if(typeof _data_.blink!="undefined"&&_data_.blink===true){
@@ -1572,7 +1488,6 @@ class mcswap {
         _tx_.table = [lookupTableAccount];  
         _tx_.tolerance = 1.2;                     
         _tx_.priority = _data_.priority; 
-        console.log("ok"); 
         return await this.tx(_tx_);
         // build transaction
     }
@@ -1605,10 +1520,6 @@ class mcswap {
         meta_data = await response.json();
         if(typeof meta_data.result.mint_extensions != "undefined"){
             ASSET_PROGRAM_ID = splToken.TOKEN_2022_PROGRAM_ID;
-            console.log("Seller NFT is Token 2022");
-        }
-        else{
-            console.log("Seller NFT is SPL Token");
         }
         const initializerMintATA = await splToken.getAssociatedTokenAddress(new PublicKey(assetId),new PublicKey(_data_.seller),false,ASSET_PROGRAM_ID,splToken.ASSOCIATED_TOKEN_PROGRAM_ID,);
         const totalSize = 1;
@@ -1650,7 +1561,6 @@ class mcswap {
         _tx_.table = false;  
         _tx_.tolerance = 1.2;                     
         _tx_.priority = _data_.priority; 
-        console.log("ok"); 
         return await this.tx(_tx_);
         // build transaction
     }catch(err){
@@ -1852,23 +1762,15 @@ class mcswap {
             swapDatahash = getSwapAsset.result.compression.data_hash;
             swapCreatorhash = getSwapAsset.result.compression.creator_hash;
             swapLeafId = getSwapAsset.result.compression.leaf_id;
-            // console.log("swap data_hash ", swapDatahash);
-            // console.log("swap creator_hash ", swapCreatorhash);
-            // console.log("swap leaf_id ", swapLeafId);
             response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
             body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAssetProof","params":{"id":swapAssetId}})});
             getSwapAssetProof = await response.json();
             swapTreeId =  getSwapAssetProof.result.tree_id;
             let swapProofTotal = getSwapAssetProof.result.proof;
             swapRoot = getSwapAssetProof.result.root;
-            // console.log("swap tree_id ", swapTreeId);
-            // console.log("swap proof total length", swapProofTotal.length);
-            // console.log("swap root ", swapRoot);
             const swapTreeAccount = await solanaAccountCompression.ConcurrentMerkleTreeAccount.fromAccountAddress(connection,new PublicKey(getSwapAssetProof.result.tree_id));
             const swapCanopyDepth = swapTreeAccount.getCanopyDepth();
-            // console.log("swap canopyDepth ", swapCanopyDepth);
             swapProof = getSwapAssetProof.result.proof.slice(0,getSwapAssetProof.result.proof.length-(!!swapCanopyDepth ? swapCanopyDepth:0)).map((node)=>({pubkey: new PublicKey(node),isWritable:false,isSigner:false,}));
-            // console.log("swap proof length ", swapProof.length);
         }
         const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-vault")],cNFTSwapProgramId);
         const swapStatePDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-swap"),new PublicKey(assetId).toBytes(),new PublicKey(swapAssetId).toBytes()],cNFTSwapProgramId);        
@@ -2192,22 +2094,15 @@ class mcswap {
             const getSwapAssetProof = await response.json();
             swapTreeId = getSwapAssetProof.result.tree_id;
             swapRoot = getSwapAssetProof.result.root;
-            console.log("swap proof total ", getSwapAssetProof.result.proof);
-            console.log("swap tree_id ", swapTreeId);
-            console.log("swap root ", swapRoot);
             const swapTreeAccount = await solanaAccountCompression.ConcurrentMerkleTreeAccount.fromAccountAddress(connection,new PublicKey(getSwapAssetProof.result.tree_id),);
             swapTreeAuthorityPDA = swapTreeAccount.getAuthority();
             const swapCanopyDepth = swapTreeAccount.getCanopyDepth();
-            console.log("swap treeAuthorityPDA ", swapTreeAuthorityPDA.toString());
-            console.log("swap canopyDepth ", swapCanopyDepth);
             swapProof = getSwapAssetProof.result.proof
             .slice(0, getSwapAssetProof.result.proof.length-(!!swapCanopyDepth ? swapCanopyDepth : 0))
             .map((node)=>({pubkey:new PublicKey(node),isWritable:false,isSigner:false,}));        
         }
         if(swapProof==null){swapProof=[];}
-        console.log("swapProof ", swapProof.length);
         const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-vault")],cNFTSwapProgramId);    
-        console.log("token:", swapTokenMint.toString());
         let TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
         response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
         body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":swapTokenMint.toString()}})});
@@ -3088,7 +2983,6 @@ class mcswap {
         _tx_.table = false;  
         _tx_.tolerance = 1.2;                     
         _tx_.priority = _data_.priority; 
-        console.log("ok"); 
         return await this.tx(_tx_);
         // build transaction
     }
@@ -3189,7 +3083,6 @@ class mcswap {
         _tx_.table = false;  
         _tx_.tolerance = 1.2;                     
         _tx_.priority = _data_.priority; 
-        console.log("ok"); 
         return await this.tx(_tx_);
         // build transaction
     }
@@ -3379,13 +3272,6 @@ class mcswap {
             let intervalID = setInterval(async()=>{
             let tx_status = null;
             tx_status = await connection.getSignatureStatuses([sig], {searchTransactionHistory: true,});
-            console.log(start+": "+sig);
-            if (tx_status != null && typeof tx_status.value != "undefined"){ 
-                console.log(tx_status.value);
-            }
-            else{
-                console.log("failed to get status...");
-            }
             if (tx_status == null || 
             typeof tx_status.value == "undefined" || 
             tx_status.value == null || 
@@ -3484,10 +3370,8 @@ class mcswap {
             }),
         });
         let data = await response.json();
-        // console.log("estimate:", data);
         data = parseInt(data.result.priorityFeeEstimate);
         if(data < 10000){data = 10000;}
-        // console.log("estimate set:", data);
         return data;
     }
     async tx(_data_){
