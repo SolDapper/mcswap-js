@@ -17,7 +17,7 @@ const params = {"rpc":rpc}
 ```javascript
 // false = you're expecting a normal signable transaction
 // true = you're expecting base64 for a Blink
-params.blink = true; // (omit||default = false)
+params.blink = false; // (omit||default = false)
 // false = you're passing fractionalized units
 // true = you're passing decimal values
 params.convert = false; // (omit||default = false)
@@ -34,9 +34,11 @@ Sell a Non-Fungible Asset for one or more of the following:
 
 • SOL
 
+Create Contract
 ```javascript
-params.convert = true;
-params.blink = true;
+params.blink = true; // optional
+params.convert = true; // optional
+params.priority = "Medium"; // optional
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // required
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
@@ -47,13 +49,36 @@ params.units = 1.0; // optional
 const tx = await mcswap.coreCreate(params);
 ```
 
-Example Response
+Cancel Contract (only the seller can cancel)
 ```javascript
-{
-  status: 'ok',
-  message: 'success',
-  transaction: 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAFDGFbWFPwChAAIrtoWArBs6Se/MageZ+Cttqxq7jzQ0gTjQOnQpEIn0twCuI+PIRR9bpEjLSo/5gShDaaHNbr9Q12zXUl4xmWuJwDltYE/d68ZpfawHuqnnkh0LYbGHERAjzp0mdpvAgCG4...'
-}
+params.blink = true;
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
+params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
+const tx = await mcswap.coreCancel(params);
+```
+
+Execute Contract (only the buyer can execute)
+```javascript
+params.blink = true;
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL";
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
+params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no nft was requested
+const tx = await mcswap.coreExecute(params);
+```
+
+Fetch Sent Contracts
+```javascript
+params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
+params.display = true; // optional convert units to decimals in response
+const coreSent = await mcswap.coreSent(params);
+```
+
+Fetch Received Contracts
+```javascript
+params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
+params.display = true; // optional convert units to decimals in response
+const coreReceived = await mcswap.coreReceived(params);
 ```
 
 # Fungible Assets
@@ -70,13 +95,4 @@ params.token3Amount = 1000000; // required
 params.token4Mint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // optional/omit
 params.token4Amount = 100000; // optional/omit
 const tx = await mcswap.splCreate(params);
-```
-
-Example Response
-```javascript
-{
-  status: 'ok',
-  message: 'success',
-  transaction: 'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAFDGFbWFPwChAAIrtoWArBs6Se/MageZ+Cttqxq7jzQ0gTjQOnQpEIn0twCuI+PIRR9bpEjLSo/5gShDaaHNbr9Q12zXUl4xmWuJwDltYE/d68ZpfawHuqnnkh0LYbGHERAjzp0mdpvAgCG4...'
-}
 ```
