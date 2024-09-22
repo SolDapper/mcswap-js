@@ -3023,7 +3023,7 @@ class mcswap {
         const getAsset = await response.json();
         if(typeof getAsset.result.grouping!="undefined"&&typeof getAsset.result.grouping[0]!="undefined"&&typeof getAsset.result.grouping[0].group_value!="undefined"){
         assetCollection = getAsset.result.grouping[0].group_value;}
-        let swapAssetCollection = new solanaWeb3.PublicKey("11111111111111111111111111111111");
+        let swapAssetCollection = new PublicKey("11111111111111111111111111111111");
         const resp = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
         body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":_data_.buyerMint}})});
         const getAss = await resp.json();
