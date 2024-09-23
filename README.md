@@ -1,8 +1,23 @@
 # mcswap-js
 Javascript SDK for the McSwap OTC Protocol
 
-Every OTC Contract has a "seller" and a "buyer"
+### OTC Trade Contract Functionality
 
+Create, Cancel, Execute, Fetch Sent, Fetch Received
+
+### Compatible Standards
+
+• SPL (+Token Extentions)
+
+• NFT (+Token Extentions)
+
+• pNFT (Default Rules)
+
+• cNFT
+
+• Core
+
+Every OTC Contract has a "seller" and a "buyer"
 # Simple NFT Sale
 Selling a Core NFT for 1.0 SOL
 ```javascript
