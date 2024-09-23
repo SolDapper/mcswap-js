@@ -145,12 +145,12 @@ const tx = await mcswap.splExecute(params);
 ```javascript
 params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required seller wallet
 params.display = true; // optional convert units to decimals in response
-const coreSent = await mcswap.splSent(params);
+const splSent = await mcswap.splSent(params);
 ```
 
 ### Fetch Received Contracts
 ```javascript
 params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required buyer wallet
 params.display = true; // optional convert units to decimals in response
-const coreReceived = await mcswap.splReceived(params);
+const splReceived = await mcswap.splReceived(params);
 ```
