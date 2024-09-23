@@ -3194,8 +3194,8 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    record.lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"}).data;
+                    record.units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint}).data;
                 }
                 CORE_SENT.push(record);
             }
