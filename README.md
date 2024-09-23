@@ -5,7 +5,7 @@ Javascript SDK for the McSwap OTC Protocol
 
 Create, Cancel, Execute, Fetch Sent, Fetch Received
 
-### Compatible Standards
+### Supported Standards
 
 • SPL (+Token Extentions)
 
