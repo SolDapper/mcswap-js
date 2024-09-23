@@ -121,3 +121,38 @@ params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required
 const tx = await mcswap.splExecute(params);
 ```
+
+### Fetch Sent Contracts
+```javascript
+params.wallet = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // required seller wallet
+params.display = true; // optional convert units to decimals in response
+const coreSent = await mcswap.splSent(params);
+```
+
+### Fetch Received Contracts
+```javascript
+params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required buyer wallet
+params.display = true; // optional convert units to decimals in response
+const coreReceived = await mcswap.splReceived(params);
+```
+
+# Simple NFT Sale Contract
+Selling one CORE NFT for 1.0 SOL
+```javascript
+import mcswap from './mcswap.js';
+const rpc = "your helius rpc endpoint";
+const params = {"rpc":rpc}
+params.blink = false; // return blink tx
+params.convert = true; // use decimals
+params.priority = "Medium";
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // seller nft
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
+params.lamports = 1.0;
+const tx = await mcswap.coreCreate(params);
+const signed = await provider.signTransaction(tx);
+const signature = await mcswap.send(tx);
+const status = await mcswap.status(signature,10,2);
+if(status!="finalized"){console.log({"status":"error","message":status});}
+console.log({"status":"success","message":"contract created"});
+```
