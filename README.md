@@ -39,15 +39,20 @@ if(status!="finalized"){console.log({"status":"error","message":status});return;
 console.log({"status":"ok","message":"contract created!"});
 ```
 
-# Import SDK
-(npm option coming soon)
+# Install SDK
 ```javascript
-import mcswap from './mcswap.js';
-const params = {"rpc":"your helius rpc endpoint"} // create new params object
+npm i mcswap-js
 ```
 
-# Special Params
+# Import SDK
 ```javascript
+import mcswap from 'mcswap-js';
+```
+
+# Params
+```javascript
+// create new params object
+const params = {"rpc":"your helius rpc endpoint"} 
 // false = you're expecting a normal signable transaction
 // true = you're expecting base64 for a Blink
 params.blink = false; // (omit||default = false)
