@@ -151,7 +151,7 @@ params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
 params.lamports = 1.0;
 const tx = await mcswap.coreCreate(params);
 const signed = await provider.signTransaction(tx);
-const signature = await mcswap.send(tx);
+const signature = await mcswap.send(signed);
 const status = await mcswap.status(signature,10,2);
 if(status!="finalized"){console.log({"status":"error","message":status});}
 console.log({"status":"success","message":"contract created"});
