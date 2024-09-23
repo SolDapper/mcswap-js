@@ -1030,10 +1030,10 @@ class mcswap {
               record.token_3_amount = parseInt(new BN(decodedData.token3_amount, 10, "le"));
               record.token_4_amount = parseInt(new BN(decodedData.token4_amount, 10, "le"));
               if(typeof _data_.display!="undefined"&&_data_.display===true){
-                record.token_1_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint});
-                record.token_2_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint});
-                record.token_3_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint});
-                record.token_4_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint});
+                record.token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint,"display":_data_.display});
+                record.token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint,"display":_data_.display});
+                record.token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint,"display":_data_.display});
+                record.token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint,"display":_data_.display});
               }
               SPL_RECEIVED.push(record);
             }
@@ -1093,10 +1093,10 @@ class mcswap {
               record.token_3_amount = parseInt(new BN(decodedData.token3_amount, 10, "le"));
               record.token_4_amount = parseInt(new BN(decodedData.token4_amount, 10, "le"));
               if(typeof _data_.display!="undefined"&&_data_.display===true){
-                record.token_1_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint});
-                record.token_2_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint});
-                record.token_3_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint});
-                record.token_4_amount = this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint});
+                record.token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint,"display":_data_.display});
+                record.token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint,"display":_data_.display});
+                record.token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint,"display":_data_.display});
+                record.token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint,"display":_data_.display});
               }
               SPL_SENT.push(record);
             }
@@ -1608,8 +1608,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 NFT_RECEIVED.push(record);
             }
@@ -1671,8 +1673,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 NFT_SENT.push(record);
             }
@@ -2219,8 +2223,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 CNFT_RECEIVED.push(record);
             }
@@ -2282,8 +2288,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 CNFT_SENT.push(record);
             }
@@ -2721,8 +2729,10 @@ class mcswap {
                     record.tokenMint = swap_token_mint;
                     record.units = swap_tokens;
                     if(typeof _data_.display!="undefined"&&_data_.display===true){
-                        record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                        record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                        const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                        const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                        record.lamports = lamports.data;
+                        record.units = units.data;
                     }
                     PNFT_RECEIVED.push(record);
                 }
@@ -2783,8 +2793,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 PNFT_SENT.push(record);
             }
@@ -2950,7 +2962,7 @@ class mcswap {
         let uarray = new Uint8Array(totalSize);    
         let counter = 0;    
         uarray[counter++] = 2;
-        const swapAssetb58 = bs58.decode(swapAsset);
+        const swapAssetb58 = bs58.decode(_data_.buyerMint);
         const arr = Array.prototype.slice.call(Buffer.from(swapAssetb58), 0);
         for(let i = 0; i < arr.length; i++) {uarray[counter++] = arr[i];}
         const keys = [
@@ -2998,15 +3010,15 @@ class mcswap {
     try{
         if(typeof _data_.priority=="undefined"||_data_.priority===false){_data_.priority=this.PRIORITY;}
         const connection = new Connection(_data_.rpc,"confirmed");
-        if(typeof _data_.buyerMint!="undefined"){_data_.buyerMint="11111111111111111111111111111111";}
-        const programStatePDA = PublicKey.findProgramAddressSync([Buffer.from("program-state")],PublicKey(this.MCSWAP_CORE_PROGRAM));
+        if(typeof _data_.buyerMint=="undefined"){_data_.buyerMint="11111111111111111111111111111111";}
+        const programStatePDA = PublicKey.findProgramAddressSync([Buffer.from("program-state")],new PublicKey(this.MCSWAP_CORE_PROGRAM));
         const programState = await connection.getAccountInfo(programStatePDA[0]).catch(function(){});
         const encodedProgramStateData = programState.data;
         const decodedProgramStateData = this.PROGRAM_STATE_CORE.decode(encodedProgramStateData);
         const devTreasury = new PublicKey(decodedProgramStateData.dev_treasury);
         const mcDegensTreasury = new PublicKey(decodedProgramStateData.mcdegens_treasury);
-        const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("swap-vault")],PublicKey(this.MCSWAP_CORE_PROGRAM));
-        const swapStatePDA = PublicKey.findProgramAddressSync([Buffer.from("swap-state"),new PublicKey(_data_.sellerMint).toBytes(),new PublicKey(_data_.buyerMint).toBytes()],PublicKey(this.MCSWAP_CORE_PROGRAM)); 
+        const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("swap-vault")],new PublicKey(this.MCSWAP_CORE_PROGRAM));
+        const swapStatePDA = PublicKey.findProgramAddressSync([Buffer.from("swap-state"),new PublicKey(_data_.sellerMint).toBytes(),new PublicKey(_data_.buyerMint).toBytes()],new PublicKey(this.MCSWAP_CORE_PROGRAM)); 
         const swapState = await connection.getAccountInfo(swapStatePDA[0]).catch(function(error){});
         let isSwap = true;
         const encodedSwapStateData = swapState.data;
@@ -3030,9 +3042,9 @@ class mcswap {
         if(typeof getAss.result.grouping!="undefined"&&typeof getAss.result.grouping[0]!="undefined"&&typeof getAss.result.grouping[0].group_value!="undefined"){
         swapAssetCollection = getAsset.result.grouping[0].group_value;}
         let CORE_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
-        if(swapTokenMint!="11111111111111111111111111111111"){  
+        if(swapTokenMint.toString()!="11111111111111111111111111111111"){  
             const resp_ = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({"jsonrpc":"2.0","id":"1A","method":"getAsset","params":{"id":_data_.tokenMint}})});
+            body:JSON.stringify({"jsonrpc":"2.0","id":"1A","method":"getAsset","params":{"id":swapTokenMint.toString()}})});
             const getAss_ = await resp_.json();
             if(typeof getAss_.result.mint_extensions!="undefined"){CORE_TOKEN_PROGRAM=splToken.TOKEN_2022_PROGRAM_ID;}
         }
@@ -3130,8 +3142,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 CORE_RECEIVED.push(record);
             }
@@ -3165,7 +3179,6 @@ class mcswap {
         let CORE_SENT = [];
         let accounts = null;
         accounts = await connection.getParsedProgramAccounts(CORE_ProgramId,{filters:[{dataSize:186,},{memcmp:{offset:10,bytes:_data_.wallet,},},],}).catch(function(){});
-        console.log(accounts.length);
         if(accounts != null){for(let i=0;i<accounts.length;i++){
             const account = accounts[i];
             const resultStatePDA = account.pubkey;
@@ -3194,8 +3207,10 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"}).data;
-                    record.units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint}).data;
+                    const lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                    const units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":record.tokenMint,"display":_data_.display});
+                    record.lamports = lamports.data;
+                    record.units = units.data;
                 }
                 CORE_SENT.push(record);
             }
@@ -3237,7 +3252,7 @@ class mcswap {
         let multiply = 1;
         for(let i = 0; i < decimals; i++){multiply = multiply * 10;}
         if(typeof _data_.display!="undefined"&&_data_.display===true){
-            amount=parseInt(_data_.amount/multiply);
+            amount=_data_.amount/multiply;
         }
         else{amount=parseInt(_data_.amount*multiply);}
         const _response_={}
@@ -3441,6 +3456,46 @@ class mcswap {
             _obj_.transaction=_tx_;
         }
         return _obj_;
+    }
+    async fee(_data_){
+        const connection=new Connection(_data_.rpc,"confirmed");
+        if(_data_.standard=="spl"){
+            const SPL_FEE_PROGRAM_PDA=PublicKey.findProgramAddressSync([Buffer.from("program-state")],new PublicKey(this.MCSWAP_SPL_PROGRAM));
+            const SPL_FEE_PROGRAM_STATE=await connection.getAccountInfo(SPL_FEE_PROGRAM_PDA[0]).catch(function(){});
+            const decodedData=this.PROGRAM_STATE_SPL.decode(SPL_FEE_PROGRAM_STATE.data);
+            const chips = parseInt(new BN(decodedData.fee_chips,10,"le").toString());
+            return Number.parseFloat(chips/1000000000).toFixed(9)+" PIKL";
+        }
+        else{
+            let PROGRAM;
+            let STATE;
+            let NAME;
+            if(_data_.standard=="nft"){
+                PROGRAM = this.MCSWAP_NFT_PROGRAM;
+                STATE = this.PROGRAM_STATE_NFT;
+                NAME = "program-state";
+            }
+            else if(_data_.standard=="cnft"){
+                PROGRAM = this.MCSWAP_CNFT_PROGRAM;
+                STATE = this.PROGRAM_STATE_CNFT;
+                NAME = "cNFT-program-state";
+            }
+            else if(_data_.standard=="pnft"){
+                PROGRAM = this.MCSWAP_PNFT_PROGRAM;
+                STATE = this.PROGRAM_STATE_PNFT;
+                NAME = "program-state";
+            }
+            else if(_data_.standard=="core"){
+                PROGRAM = this.MCSWAP_CORE_PROGRAM;
+                STATE = this.PROGRAM_STATE_CORE;
+                NAME = "program-state";
+            }
+            const FEE_PROGRAM_PDA=PublicKey.findProgramAddressSync([Buffer.from(NAME)],new PublicKey(PROGRAM));
+            const FEE_PROGRAM_STATE=await connection.getAccountInfo(FEE_PROGRAM_PDA[0]).catch(function(){});
+            const decodedData=STATE.decode(FEE_PROGRAM_STATE.data);
+            const lamports = parseInt(new BN(decodedData.fee_lamports,10,"le").toString());
+            return Number.parseFloat(lamports/1000000000).toFixed(9)+" SOL";
+        }
     }
 }
 const _mcswap_ = new mcswap();
