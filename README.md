@@ -19,8 +19,8 @@ const tx = await mcswap.coreCreate(params); // build the tx
 const signed = await provider.signTransaction(tx); // sign the tx
 const signature = await mcswap.send(signed); // send the tx
 const status = await mcswap.status(signature,10,2); // wait for finalization
-if(status!="finalized"){console.log({"status":"error","message":status});}
-console.log({"status":"success","message":"contract created"});
+if(status!="finalized"){console.log({"status":"error","message":status});return;}
+console.log({"status":"success","message":"contract created!"});
 ```
 
 # Import SDK
