@@ -3234,7 +3234,7 @@ class mcswap {
             decimals = meta_data.result.token_info.decimals;
         }
         let amount = 0;
-        const multiply = 1;
+        let multiply = 1;
         for(let i = 0; i < decimals; i++){multiply = multiply * 10;}
         if(typeof _data_.display!="undefined"&&_data_.display===true){
             amount=parseInt(_data_.amount/multiply);
