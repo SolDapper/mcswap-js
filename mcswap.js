@@ -3113,10 +3113,10 @@ class mcswap {
                 const acct = account.pubkey.toString();
                 record.acct = acct;
                 const initializer = new PublicKey(decodedData.initializer).toString();
-                const initializer_mint = new PublicKey(decodedData.asset_id).toString();
-                const taker = new PublicKey(decodedData.swap_leaf_owner).toString();
+                const initializer_mint = new PublicKey(decodedData.initializer_asset).toString();
+                const taker = new PublicKey(decodedData.taker).toString();
                 const is_swap = new PublicKey(decodedData.is_swap).toString();
-                const swap_mint = new PublicKey(decodedData.swap_asset_id).toString();
+                const swap_mint = new PublicKey(decodedData.swap_asset).toString();
                 const swap_lamports = parseInt(new BN(decodedData.swap_lamports, 10, "le"));
                 const swap_token_mint = new PublicKey(decodedData.swap_token_mint).toString();
                 const swap_tokens = parseInt(new BN(decodedData.swap_tokens, 10, "le"));
@@ -3160,11 +3160,12 @@ class mcswap {
     async coreSent(_data_){
     try{
         const connection = new Connection(_data_.rpc,"confirmed");
-        const CORE_ProgramId = new PublicKey(this.MCSWAP_CNFT_PROGRAM);
+        const CORE_ProgramId = new PublicKey(this.MCSWAP_CORE_PROGRAM);
         const _result_ = {}
         let CORE_SENT = [];
         let accounts = null;
         accounts = await connection.getParsedProgramAccounts(CORE_ProgramId,{filters:[{dataSize:186,},{memcmp:{offset:10,bytes:_data_.wallet,},},],}).catch(function(){});
+        console.log(accounts.length);
         if(accounts != null){for(let i=0;i<accounts.length;i++){
             const account = accounts[i];
             const resultStatePDA = account.pubkey;
@@ -3176,10 +3177,10 @@ class mcswap {
                 const acct = account.pubkey.toString();
                 record.acct = acct;
                 const initializer = new PublicKey(decodedData.initializer).toString();
-                const initializer_mint = new PublicKey(decodedData.asset_id).toString();
-                const taker = new PublicKey(decodedData.swap_leaf_owner).toString();
+                const initializer_mint = new PublicKey(decodedData.initializer_asset).toString();
+                const taker = new PublicKey(decodedData.taker).toString();
                 const is_swap = new PublicKey(decodedData.is_swap).toString();
-                const swap_mint = new PublicKey(decodedData.swap_asset_id).toString();
+                const swap_mint = new PublicKey(decodedData.swap_asset).toString();
                 const swap_lamports = parseInt(new BN(decodedData.swap_lamports, 10, "le"));
                 const swap_token_mint = new PublicKey(decodedData.swap_token_mint).toString();
                 const swap_tokens = parseInt(new BN(decodedData.swap_tokens, 10, "le"));
@@ -3193,8 +3194,8 @@ class mcswap {
                 record.tokenMint = swap_token_mint;
                 record.units = swap_tokens;
                 if(typeof _data_.display!="undefined"&&_data_.display===true){
-                    record.lamports = this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
-                    record.units = this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
+                    record.lamports = await this.convert({"rpc":_data_.rpc,"amount":record.lamports,"mint":"11111111111111111111111111111111"});
+                    record.units = await this.convert({"rpc":_data_.rpc,"amount":record.units,"mint":_data_.tokenMint});
                 }
                 CORE_SENT.push(record);
             }
