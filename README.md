@@ -156,12 +156,12 @@ const splReceived = await mcswap.splReceived(params);
 ```
 
 # Fees
-The following will fetch the current protocol fees per program
+The following fetches the current protocol fees
 ```javascript
-// Get PIKL fee for McSwap SPL programs
+// Get PIKL fee for the McSwap SPL txs (Fungible)
 params.standard = "nft";
 console.log(await mcswap.fee(params));
-// Get SOL fee for McSwap NFT programs
+// Get SOL fee for McSwap NFT txs (Non-Fungible)
 params.standard = "nft";
 console.log(await mcswap.fee(params));
 params.standard = "cnft";
