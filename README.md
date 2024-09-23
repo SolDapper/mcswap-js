@@ -139,10 +139,10 @@ const coreReceived = await mcswap.splReceived(params);
 # Simple NFT Sale
 Selling a NFT for 1.0 SOL
 ```javascript
-import mcswap from './mcswap.js';
-const params = {"rpc":"your helius rpc endpoint"}
-params.blink = false; // returns signable tx
-params.convert = true; // uses decimals instead of fractional units
+import mcswap from './mcswap.js'; // import module
+const params = {"rpc":"your helius rpc endpoint"} // create new params object
+params.blink = false; // return signable tx
+params.convert = true; // use decimals instead of fractional units
 params.priority = "Medium"; // fee priority
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // seller nft
