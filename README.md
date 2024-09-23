@@ -140,19 +140,18 @@ const coreReceived = await mcswap.splReceived(params);
 Selling a NFT for 1.0 SOL
 ```javascript
 import mcswap from './mcswap.js';
-const rpc = "your helius rpc endpoint";
-const params = {"rpc":rpc}
-params.blink = false; // return blink tx
-params.convert = true; // use decimals
-params.priority = "Medium";
+const params = {"rpc":"your helius rpc endpoint"}
+params.blink = false; // returns signable tx
+params.convert = true; // uses decimals instead of fractional units
+params.priority = "Medium"; // fee priority
 params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere"; // seller wallet
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi"; // seller nft
 params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // buyer wallet
-params.lamports = 1.0;
-const tx = await mcswap.coreCreate(params);
-const signed = await provider.signTransaction(tx);
-const signature = await mcswap.send(signed);
-const status = await mcswap.status(signature,10,2);
+params.lamports = 1.0; // SOL - using decimals via convert
+const tx = await mcswap.coreCreate(params); // build the tx
+const signed = await provider.signTransaction(tx); // sign the tx
+const signature = await mcswap.send(signed); // send the tx
+const status = await mcswap.status(signature,10,2); // wait for finalization
 if(status!="finalized"){console.log({"status":"error","message":status});}
 console.log({"status":"success","message":"contract created"});
 ```
