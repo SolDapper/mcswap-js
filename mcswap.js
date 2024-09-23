@@ -1030,10 +1030,10 @@ class mcswap {
               record.token_3_amount = parseInt(new BN(decodedData.token3_amount, 10, "le"));
               record.token_4_amount = parseInt(new BN(decodedData.token4_amount, 10, "le"));
               if(typeof _data_.display!="undefined"&&_data_.display===true){
-                const token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint,"display":_data_.display});
-                const token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint,"display":_data_.display});
-                const token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint,"display":_data_.display});
-                const token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint,"display":_data_.display});
+                const token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":record.token_1_mint,"display":_data_.display});
+                const token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":record.token_2_mint,"display":_data_.display});
+                const token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":record.token_3_mint,"display":_data_.display});
+                const token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":record.token_4_mint,"display":_data_.display});
                 record.token_1_amount = token_1_amount.data;
                 record.token_2_amount = token_2_amount.data;
                 record.token_3_amount = token_3_amount.data;
@@ -1097,10 +1097,10 @@ class mcswap {
               record.token_3_amount = parseInt(new BN(decodedData.token3_amount, 10, "le"));
               record.token_4_amount = parseInt(new BN(decodedData.token4_amount, 10, "le"));
               if(typeof _data_.display!="undefined"&&_data_.display===true){
-                const token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":_data_.token_1_mint,"display":_data_.display});
-                const token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":_data_.token_2_mint,"display":_data_.display});
-                const token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":_data_.token_3_mint,"display":_data_.display});
-                const token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":_data_.token_4_mint,"display":_data_.display});
+                const token_1_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_1_amount,"mint":record.token_1_mint,"display":_data_.display});
+                const token_2_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_2_amount,"mint":record.token_2_mint,"display":_data_.display});
+                const token_3_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_3_amount,"mint":record.token_3_mint,"display":_data_.display});
+                const token_4_amount = await this.convert({"rpc":_data_.rpc,"amount":record.token_4_amount,"mint":record.token_4_mint,"display":_data_.display});
                 record.token_1_amount = token_1_amount.data;
                 record.token_2_amount = token_2_amount.data;
                 record.token_3_amount = token_3_amount.data;
