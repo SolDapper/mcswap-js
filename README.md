@@ -27,8 +27,7 @@ console.log({"status":"success","message":"contract created"});
 (npm option coming soon)
 ```javascript
 import mcswap from './mcswap.js';
-const rpc = "your helius rpc endpoint";
-const params = {"rpc":rpc}
+const params = {"rpc":"your helius rpc endpoint"} // create new params object
 ```
 
 # Special Params
