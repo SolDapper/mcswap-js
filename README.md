@@ -4,7 +4,7 @@ Javascript SDK for the McSwap OTC Protocol
 Every OTC Contract has a "seller" and a "buyer"
 
 # Simple NFT Sale
-Selling a NFT for 1.0 SOL
+Selling a Core NFT for 1.0 SOL
 ```javascript
 import mcswap from './mcswap.js'; // import module
 const params = {"rpc":"your helius rpc endpoint"} // create new params object
