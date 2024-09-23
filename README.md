@@ -27,11 +27,11 @@ console.log({"status":"success","message":"contract created!"});
 (npm option coming soon)
 ```javascript
 import mcswap from './mcswap.js';
+const params = {"rpc":"your helius rpc endpoint"} // create new params object
 ```
 
 # Special Params
 ```javascript
-const params = {"rpc":"your helius rpc endpoint"} // create new params object
 // false = you're expecting a normal signable transaction
 // true = you're expecting base64 for a Blink
 params.blink = false; // (omit||default = false)
