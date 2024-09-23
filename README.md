@@ -17,9 +17,6 @@ Create, Cancel, Execute, Fetch Sent, Fetch Received
 
 • Core
 
-# Simple NFT Sale
-Selling a Core NFT for 1.0 SOL
-
 # Install SDK
 ```javascript
 npm i mcswap-js
@@ -43,6 +40,9 @@ params.convert = false; // (omit||default = false)
 // Fee Priority Options = VeryHigh, High, Medium, Low, Min
 params.priority = "Low"; // (omit||default = "Low")
 ```
+
+# Simple NFT Sale
+Selling a Core NFT for 1.0 SOL
 
 Every OTC Contract has a "seller" and a "buyer"
 ```javascript
