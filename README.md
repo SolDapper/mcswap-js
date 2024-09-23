@@ -154,3 +154,20 @@ params.wallet = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // required buye
 params.display = true; // optional convert units to decimals in response
 const splReceived = await mcswap.splReceived(params);
 ```
+
+# Fees
+The following will fetch the current protocol fees per program
+```javascript
+// Get PIKL fee for McSwap SPL programs
+params.standard = "nft";
+console.log(await mcswap.fee(params));
+// Get SOL fee for McSwap NFT programs
+params.standard = "nft";
+console.log(await mcswap.fee(params));
+params.standard = "cnft";
+console.log(await mcswap.fee(params));
+params.standard = "pnft";
+console.log(await mcswap.fee(params));
+params.standard = "core";
+console.log(await mcswap.fee(params));
+```
