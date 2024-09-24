@@ -87,7 +87,7 @@ params.units = 1.0; // optional
 const tx = await mcswap.coreCreate(params);
 ```
 
-### Fetch a Contract
+### Fetch Contract
 ```javascript
 params.display = true;
 params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
@@ -156,7 +156,7 @@ params.token4Amount = 100000; // optional/omit
 const tx = await mcswap.splCreate(params);
 ```
 
-### Fetch a Contract
+### Fetch Contract
 ```javascript
 // fetching spl contracts is temporarily unavailable
 params.display = true;
