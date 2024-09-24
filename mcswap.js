@@ -145,10 +145,85 @@ class mcswap {
             uint64("swap_tokens"),
         ]);
     }
+    async fetch(_data_){
+    try{
+        const _result_={}
+        if(typeof _data_.standard=="undefined"){_result_.status="error";_result_.message="requires standard parameter";return;}
+        let PROGRAM;
+        let STATE;
+        let NAME;
+        if(_data_.standard=="spl"){
+
+
+
+        }
+        else{
+            if(_data_.standard=="nft"){
+                PROGRAM = this.MCSWAP_NFT_PROGRAM;
+                STATE = this.SWAP_NFT_STATE;
+                NAME = "swap-state";
+            }
+            else if(_data_.standard=="cnft"){
+                PROGRAM = this.MCSWAP_CNFT_PROGRAM;
+                STATE = this.SWAP_CNFT_STATE;
+                NAME = "cNFT-swap";
+            }
+            else if(_data_.standard=="pnft"){
+                PROGRAM = this.MCSWAP_PNFT_PROGRAM;
+                STATE = this.SWAP_PNFT_STATE;
+                NAME = "swap-state";
+            }
+            else if(_data_.standard=="core"){
+                PROGRAM = this.MCSWAP_CORE_PROGRAM;
+                STATE = this.SWAP_CORE_STATE;
+                NAME = "swap-state";
+            }
+            const connection=new Connection(_data_.rpc,"confirmed");
+            if(typeof _data_.buyerMint=="undefined"||_data_.buyerMint==""){_data_.buyerMint="11111111111111111111111111111111"}
+            const STATE_PDA=PublicKey.findProgramAddressSync([Buffer.from(NAME),new PublicKey(_data_.sellerMint).toBytes(),new PublicKey(_data_.buyerMint).toBytes()],new PublicKey(PROGRAM));
+            const SWAP_STATE=await connection.getAccountInfo(STATE_PDA[0]).catch(function(){});
+            const encoded=SWAP_STATE.data;
+            const decoded=STATE.decode(encoded);
+            if(_data_.standard=="core"){
+                _result_.sellerMint=new PublicKey(decoded.initializer_asset).toString();
+                _result_.buyerMint=new PublicKey(decoded.swap_asset).toString();
+            }
+            else if(_data_.standard=="cnft"){
+                _result_.sellerMint=new PublicKey(decoded.asset_id).toString();
+                _result_.buyerMint=new PublicKey(decoded.swap_asset_id).toString();
+            }
+            else{
+                _result_.sellerMint=new PublicKey(decoded.initializer_mint).toString();
+                _result_.buyerMint=new PublicKey(decoded.swap_mint).toString();
+            }
+            if(_data_.standard=="cnft"){
+                _result_.buyer=new PublicKey(decoded.swap_leaf_owner).toString();
+            }
+            else{
+                _result_.buyer=new PublicKey(decoded.taker).toString();
+            }
+            _result_.seller=new PublicKey(decoded.initializer).toString();
+            _result_.lamports=parseInt(new BN(decoded.swap_lamports,10,"le"));
+            _result_.tokenMint=new PublicKey(decoded.swap_token_mint).toString();
+            _result_.units=parseInt(new BN(decoded.swap_tokens,10,"le"));
+            if(typeof _data_.display!="undefined"&&_data_.display===true){
+                const lamports=await this.convert({"rpc":_data_.rpc,"amount":_result_.lamports,"mint":"11111111111111111111111111111111","display":_data_.display});
+                const units=await this.convert({"rpc":_data_.rpc,"amount":_result_.units,"mint":_result_.tokenMint,"display":_data_.display});
+                _result_.lamports=lamports.data;
+                _result_.units=units.data;
+            }
+            return _result_;
+        }
+    }
+    catch(err){
+        const _error_ = {}
+        _error_.status="error";
+        _error_.message=err;
+        return _error_;
+    }
+    }
     async splCreate(_data_){
     try{
-
-
         if(typeof _data_.convert!="undefined"&&_data_.convert===true){
             if(typeof _data_.token1Amount!="undefined"&&_data_.token1Amount>0){
                 const amount_1 = this.convert({"rpc":_data_.rpc,"amount":_data_.token1Amount,"mint":_data_.token1Mint});
@@ -167,7 +242,6 @@ class mcswap {
                 _data_.token4Amount = parseInt(amount_4.data);
             }
         } 
-
         if(typeof _data_.priority=="undefined"||_data_.priority===false){_data_.priority=this.PRIORITY;}
         const _response_ = {};
         const connection = new Connection(_data_.rpc, "confirmed");
@@ -3260,7 +3334,7 @@ class mcswap {
         let multiply = 1;
         for(let i = 0; i < decimals; i++){multiply = multiply * 10;}
         if(typeof _data_.display!="undefined"&&_data_.display===true){
-            amount=_data_.amount/multiply;
+            amount=(_data_.amount/multiply).toFixed(decimals);
         }
         else{amount=parseInt(_data_.amount*multiply);}
         const _response_={}
