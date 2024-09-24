@@ -3,7 +3,7 @@ Javascript SDK for the McSwap OTC Protocol
 
 ### OTC Trade Contract Functionality
 
-Create, Cancel, Execute, Fetch Sent, Fetch Received
+Create, Fetch, Cancel, Execute, Fetch Sent, Fetch Received
 
 ### Supported Standards
 

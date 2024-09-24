@@ -167,14 +167,14 @@ class mcswap {
             const encoded=SWAP_STATE.data;
             const decoded=STATE.decode(encoded);
             _result_.seller=(new PublicKey(decoded.initializer)).toString();
-            _result_.token1Mint=(new PublicKey(decoded.token1_mint)).toString();
-            _result_.token1Amount=new BN(decoded.token1_amount, 10, "le");
-            _result_.token2Mint=(new PublicKey(decoded.token2_mint)).toString();
-            _result_.token2Amount=new BN(decoded.token2_amount, 10, "le");
             _result_.buyer=(new PublicKey(decoded.taker)).toString();
+            _result_.token1Mint=(new PublicKey(decoded.token1_mint)).toString();
+            _result_.token2Mint=(new PublicKey(decoded.token2_mint)).toString();
             _result_.token3Mint=(new PublicKey(decoded.token3_mint)).toString();
-            _result_.token3Amount=new BN(decoded.token3_amount, 10, "le");
             _result_.token4Mint=(new PublicKey(decoded.token4_mint)).toString();
+            _result_.token1Amount=new BN(decoded.token1_amount, 10, "le");
+            _result_.token2Amount=new BN(decoded.token2_amount, 10, "le");
+            _result_.token3Amount=new BN(decoded.token3_amount, 10, "le");
             _result_.token4Amount=new BN(decoded.token4_amount, 10, "le");
             _result_.token1Amount=parseInt(_result_.token1Amount);
             _result_.token2Amount=parseInt(_result_.token2Amount);
@@ -189,6 +189,14 @@ class mcswap {
                 _result_.token2Amount=token2Amount.data;
                 _result_.token3Amount=token3Amount.data;
                 _result_.token4Amount=token4Amount.data;
+                _result_.token1Symbol=token1Amount.symbol;
+                _result_.token2Symbol=token2Amount.symbol;
+                _result_.token3Symbol=token3Amount.symbol;
+                _result_.token4Symbol=token4Amount.symbol;
+                _result_.token1Decimals=token1Amount.decimals;
+                _result_.token2Decimals=token2Amount.decimals;
+                _result_.token3Decimals=token3Amount.decimals;
+                _result_.token4Decimals=token4Amount.decimals;
             }
             return _result_;
         }
@@ -3355,14 +3363,17 @@ class mcswap {
     async convert(_data_){
     try{
         let decimals;
+        let symbol;
         if(_data_.mint=="11111111111111111111111111111111"){
             decimals = 9;
+            symbol = "SOL";
         }
         else{
             const response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
             body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":_data_.mint}})});
             const meta_data = await response.json();
             decimals = meta_data.result.token_info.decimals;
+            symbol = meta_data.result.token_info.symbol;
         }
         let amount = 0;
         let multiply = 1;
@@ -3375,6 +3386,8 @@ class mcswap {
         _response_.status="ok";
         _response_.message="conversion successful";
         _response_.data=amount;
+        _response_.symbol=symbol;
+        _response_.decimals=decimals;
         return _response_;
     }
     catch(err){
