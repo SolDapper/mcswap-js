@@ -87,6 +87,18 @@ params.units = 1.0; // optional
 const tx = await mcswap.coreCreate(params);
 ```
 
+# Fetch a Contract
+```javascript
+params.display = true;
+params.sellerMint = "56nFoG781ZksKWEyJF5vs5H8Fq3S491EJM3BAogCqRBi";
+params.buyerMint = "J8kHWEjGo4rH1rsVbLvL7idFiKdx3sJCrwd6yU8W3JyP"; // omit if no buyer nft
+params.standard = "nft";
+// params.standard = "cnft";
+// params.standard = "pnft";
+// params.standard = "core";
+console.log(await mcswap.fetch(params));
+```
+
 ### Cancel Contract (only the seller can cancel)
 ```javascript
 params.blink = true;
@@ -142,6 +154,16 @@ params.token3Amount = 1000000; // required
 params.token4Mint = "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263"; // optional/omit
 params.token4Amount = 100000; // optional/omit
 const tx = await mcswap.splCreate(params);
+```
+
+# Fetch a Contract
+```javascript
+// fetching spl contracts is temporarily unavailable
+params.display = true;
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+params.buyer = "ACgZcmgmAnMDxXxZUo9Zwg2PS6WQLXy63JnnLmJFYxZZ"; // omit if no buyer nft
+params.standard = "spl";
+console.log(await mcswap.fetch(params));
 ```
 
 ### Cancel Contract (only the seller can cancel)
