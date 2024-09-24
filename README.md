@@ -7,9 +7,9 @@ Create, Cancel, Execute, Fetch Sent, Fetch Received
 
 ### Supported Standards
 
-• SPL (+Token Extentions)
+• SPL (+Token Extensions)
 
-• NFT (+Token Extentions)
+• NFT (+Token Extensions)
 
 • pNFT (Default Rules)
 
