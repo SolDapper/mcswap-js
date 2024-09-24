@@ -253,6 +253,8 @@ class mcswap {
                 const units=await this.convert({"rpc":_data_.rpc,"amount":_result_.units,"mint":_result_.tokenMint,"display":_data_.display});
                 _result_.lamports=lamports.data;
                 _result_.units=units.data;
+                _result_.symbol=units.symbol;
+                _result_.decimals=units.decimals;
             }
             return _result_;
         }
