@@ -152,10 +152,45 @@ class mcswap {
         let PROGRAM;
         let STATE;
         let NAME;
+        const connection=new Connection(_data_.rpc,"confirmed");
         if(_data_.standard=="spl"){
-
-
-
+            PROGRAM = this.MCSWAP_SPL_PROGRAM;
+            STATE = this.SWAP_SPL_STATE;
+            NAME = "swap-state";
+            if(typeof _data_.seller=="undefined"||_data_.seller==""||typeof _data_.buyer=="undefined"||_data_.buyer==""){
+                _result_.status="error";
+                _result_.message="seller and buyer required";
+                return _result_;
+            }
+            const STATE_PDA=PublicKey.findProgramAddressSync([Buffer.from(NAME),new PublicKey(_data_.seller).toBytes(),new PublicKey(_data_.buyer).toBytes()],new PublicKey(PROGRAM));
+            const SWAP_STATE=await connection.getAccountInfo(new PublicKey(STATE_PDA[0]));
+            const encoded=SWAP_STATE.data;
+            const decoded=STATE.decode(encoded);
+            _result_.seller=(new PublicKey(decoded.initializer)).toString();
+            _result_.token1Mint=(new PublicKey(decoded.token1_mint)).toString();
+            _result_.token1Amount=new BN(decoded.token1_amount, 10, "le");
+            _result_.token2Mint=(new PublicKey(decoded.token2_mint)).toString();
+            _result_.token2Amount=new BN(decoded.token2_amount, 10, "le");
+            _result_.buyer=(new PublicKey(decoded.taker)).toString();
+            _result_.token3Mint=(new PublicKey(decoded.token3_mint)).toString();
+            _result_.token3Amount=new BN(decoded.token3_amount, 10, "le");
+            _result_.token4Mint=(new PublicKey(decoded.token4_mint)).toString();
+            _result_.token4Amount=new BN(decoded.token4_amount, 10, "le");
+            _result_.token1Amount=parseInt(_result_.token1Amount);
+            _result_.token2Amount=parseInt(_result_.token2Amount);
+            _result_.token3Amount=parseInt(_result_.token3Amount);
+            _result_.token4Amount=parseInt(_result_.token4Amount);
+            if(typeof _data_.display!="undefined"&&_data_.display===true){
+                const token1Amount=await this.convert({"rpc":_data_.rpc,"amount":_result_.token1Amount,"mint":_result_.token1Mint,"display":_data_.display});
+                const token2Amount=await this.convert({"rpc":_data_.rpc,"amount":_result_.token2Amount,"mint":_result_.token2Mint,"display":_data_.display});
+                const token3Amount=await this.convert({"rpc":_data_.rpc,"amount":_result_.token3Amount,"mint":_result_.token3Mint,"display":_data_.display});
+                const token4Amount=await this.convert({"rpc":_data_.rpc,"amount":_result_.token4Amount,"mint":_result_.token4Mint,"display":_data_.display});
+                _result_.token1Amount=token1Amount.data;
+                _result_.token2Amount=token2Amount.data;
+                _result_.token3Amount=token3Amount.data;
+                _result_.token4Amount=token4Amount.data;
+            }
+            return _result_;
         }
         else{
             if(_data_.standard=="nft"){
@@ -178,7 +213,6 @@ class mcswap {
                 STATE = this.SWAP_CORE_STATE;
                 NAME = "swap-state";
             }
-            const connection=new Connection(_data_.rpc,"confirmed");
             if(typeof _data_.buyerMint=="undefined"||_data_.buyerMint==""){_data_.buyerMint="11111111111111111111111111111111"}
             const STATE_PDA=PublicKey.findProgramAddressSync([Buffer.from(NAME),new PublicKey(_data_.sellerMint).toBytes(),new PublicKey(_data_.buyerMint).toBytes()],new PublicKey(PROGRAM));
             const SWAP_STATE=await connection.getAccountInfo(STATE_PDA[0]).catch(function(){});

@@ -158,12 +158,12 @@ const tx = await mcswap.splCreate(params);
 
 ### Fetch Contract
 ```javascript
-// fetch spl is temporarily unavailable
-// params.display = true;
-// params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
-// params.buyer = "ACgZcmgmAnMDxXxZUo9Zwg2PS6WQLXy63JnnLmJFYxZZ"; // omit if no buyer nft
-// params.standard = "spl";
-// console.log(await mcswap.fetch(params));
+fetch spl is temporarily unavailable
+params.display = true;
+params.seller = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+params.buyer = "2jcih7dUFmEQfMUXQQnL2Fkq9zMqj4jwpHqvRVe3gGLL"; // omit if no buyer nft
+params.standard = "spl";
+console.log(await mcswap.fetch(params));
 ```
 
 ### Cancel Contract (only the seller can cancel)
