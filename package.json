@@ -1,6 +1,6 @@
 {
   "name": "mcswap-js",
-  "version": "0.1.3",
+  "version": "0.1.5",
   "description": "mcswap-js javascript sdk for the mcswap protocol",
   "main": "mcswap.js",
   "type": "module",
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/McDegens-DAO/mcswap-js.git"
   },
   "keywords": [
-    "otc"
+    "solana","trustless","otc"
   ],
   "author": "@SolDapper",
   "license": "MIT",

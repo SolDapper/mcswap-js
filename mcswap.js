@@ -3166,7 +3166,7 @@ class mcswap {
         body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":_data_.buyerMint}})});
         const getAss = await resp.json();
         if(typeof getAss.result.grouping!="undefined"&&typeof getAss.result.grouping[0]!="undefined"&&typeof getAss.result.grouping[0].group_value!="undefined"){
-        swapAssetCollection = getAsset.result.grouping[0].group_value;}
+        swapAssetCollection = getAss.result.grouping[0].group_value;}
         let CORE_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
         if(swapTokenMint.toString()!="11111111111111111111111111111111"){  
             const resp_ = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
