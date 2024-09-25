@@ -1874,7 +1874,7 @@ class mcswap {
         let treeAccount = await solanaAccountCompression.ConcurrentMerkleTreeAccount.fromAccountAddress(connection,new PublicKey(getAssetProof.result.tree_id));  
         let treeAuthorityPDA = treeAccount.getAuthority();
         let canopyDepth = treeAccount.getCanopyDepth();
-        let proof = 0;
+        let proof = [];
         proof = getAssetProof.result.proof.slice(0,getAssetProof.result.proof.length-(!!canopyDepth ? canopyDepth:0)).map((node)=>({pubkey:new PublicKey(node),isWritable:false,isSigner:false,}));
         let swapAssetOwner = taker;
         let swapDelegate = taker;
@@ -1883,7 +1883,7 @@ class mcswap {
         let swapLeafId = 0;
         let swapTreeId  = "11111111111111111111111111111111";
         let swapRoot  = "11111111111111111111111111111111";
-        let swapProof = 0;  
+        let swapProof = []; 
         let getSwapAsset;
         let getSwapAssetProof;
         if (isSwap === true) {
@@ -1905,10 +1905,10 @@ class mcswap {
             const swapCanopyDepth = swapTreeAccount.getCanopyDepth();
             swapProof = getSwapAssetProof.result.proof.slice(0,getSwapAssetProof.result.proof.length-(!!swapCanopyDepth ? swapCanopyDepth:0)).map((node)=>({pubkey: new PublicKey(node),isWritable:false,isSigner:false,}));
         }
-        if((proof+swapProof)>max_proofs){
+        if((proof.length+swapProof.length)>max_proofs){
             const _error_ = {}
             _error_.status="error";
-            _error_.message="combined proofs ("+(proof+swapProof)+") can not excede "+max_proofs;
+            _error_.message="combined proofs ("+(proof.length+swapProof.length)+") can not excede ("+max_proofs+")";
             return _error_;
         }
         else{
