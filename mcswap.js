@@ -1466,7 +1466,7 @@ class mcswap {
         _tx_.signers = false;                
         _tx_.table = [lookupTableAccount];  
         _tx_.tolerance = 1.2;                     
-        _tx_.priority = _data_.priority; 
+        _tx_.priority = _data_.priority;
         return await this.tx(_tx_);
         // build transaction
 
@@ -2495,7 +2495,7 @@ class mcswap {
               if(takerMintInfo==null){createSwapMintATA=true;createSwapMintATAIx=splToken.createAssociatedTokenAccountInstruction(new PublicKey(_data_.seller),swapMintATA,new PublicKey(_data_.seller),new PublicKey(swapMint),splToken.TOKEN_PROGRAM_ID,splToken.ASSOCIATED_TOKEN_PROGRAM_ID)} 
               else{createSwapMintATA=false;}
             }        
-            const PNFT_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
+            let PNFT_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
             let createSwapTokenATA = false;
             let createSwapTokenATAIx = null;
             let swapTokenATA = null;
