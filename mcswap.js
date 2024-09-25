@@ -1829,6 +1829,7 @@ class mcswap {
     }
     async cnftCreate(_data_){
     try{
+        const max_proofs = 18;
         if(typeof _data_.convert!="undefined"&&_data_.convert===true){
             if(typeof _data_.lamports!="undefined"&&_data_.lamports>0){
                 let amount_a = await this.convert({"rpc":_data_.rpc,"amount":_data_.lamports,"mint":"11111111111111111111111111111111"});
@@ -1873,7 +1874,8 @@ class mcswap {
         let treeAccount = await solanaAccountCompression.ConcurrentMerkleTreeAccount.fromAccountAddress(connection,new PublicKey(getAssetProof.result.tree_id));  
         let treeAuthorityPDA = treeAccount.getAuthority();
         let canopyDepth = treeAccount.getCanopyDepth();
-        let proof = getAssetProof.result.proof.slice(0,getAssetProof.result.proof.length-(!!canopyDepth ? canopyDepth:0)).map((node)=>({pubkey:new PublicKey(node),isWritable:false,isSigner:false,}));
+        let proof = 0;
+        proof = getAssetProof.result.proof.slice(0,getAssetProof.result.proof.length-(!!canopyDepth ? canopyDepth:0)).map((node)=>({pubkey:new PublicKey(node),isWritable:false,isSigner:false,}));
         let swapAssetOwner = taker;
         let swapDelegate = taker;
         let swapDatahash = "11111111111111111111111111111111";
@@ -1881,7 +1883,7 @@ class mcswap {
         let swapLeafId = 0;
         let swapTreeId  = "11111111111111111111111111111111";
         let swapRoot  = "11111111111111111111111111111111";
-        let swapProof = null;  
+        let swapProof = 0;  
         let getSwapAsset;
         let getSwapAssetProof;
         if (isSwap === true) {
@@ -1903,144 +1905,152 @@ class mcswap {
             const swapCanopyDepth = swapTreeAccount.getCanopyDepth();
             swapProof = getSwapAssetProof.result.proof.slice(0,getSwapAssetProof.result.proof.length-(!!swapCanopyDepth ? swapCanopyDepth:0)).map((node)=>({pubkey: new PublicKey(node),isWritable:false,isSigner:false,}));
         }
-        const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-vault")],cNFTSwapProgramId);
-        const swapStatePDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-swap"),new PublicKey(assetId).toBytes(),new PublicKey(swapAssetId).toBytes()],cNFTSwapProgramId);        
-        let tokenATA = null;
-        let createTokenATA = null;
-        let createTokenATAIx = null;
-        if(swapTokenMint.toString()!="11111111111111111111111111111111"){
-            let CNFT_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
-            response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
-            body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":swapTokenMint.toString()}})});
-            let getAsset = await response.json();
-            if(typeof getAsset.result.mint_extensions!="undefined"){CNFT_TOKEN_PROGRAM=splToken.TOKEN_2022_PROGRAM_ID;}
-            tokenATA = await splToken.getAssociatedTokenAddress(swapTokenMint,new PublicKey(_data_.seller),false,CNFT_TOKEN_PROGRAM,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
-            response = null;
-            response = await connection.getAccountInfo(tokenATA);
-            if(response==null){
-                createTokenATA = true;
-                createTokenATAIx = splToken.createAssociatedTokenAccountInstruction(new PublicKey(_data_.seller),tokenATA,new PublicKey(_data_.seller),swapTokenMint,CNFT_TOKEN_PROGRAM,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
-            }
-            else{createTokenATA=false;}
-        }
-        let totalSize = 1 + 1 + 32 + 32 + 32 + 32 + 8 + 32 + 32 + 32 + 32 + 32 + 32 + 32 + 8 + 1 + 8 + 32 + 8;        
-        let uarray = new Uint8Array(totalSize);
-        let counter = 0;    
-        uarray[counter++] = 0; // 0 = cnft_swap InitializeSwap instruction        
-        if(isSwap===true){uarray[counter++]=1;}else{uarray[counter++]=0;}        
-        let arr;
-        let byte;
-        let index;
-        let byteArray;
-        const assetIdb58 = bs58.decode(assetId);
-        arr = Array.prototype.slice.call(Buffer.from(assetIdb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}        
-        const rootb58 = bs58.decode(getAssetProof.result.root);
-        arr = Array.prototype.slice.call(Buffer.from(rootb58),0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}        
-        const datahashb58 = bs58.decode(getAsset.result.compression.data_hash);
-        arr = Array.prototype.slice.call(Buffer.from(datahashb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const creatorhashb58 = bs58.decode(getAsset.result.compression.creator_hash);
-        arr = Array.prototype.slice.call(Buffer.from(creatorhashb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-        for (index = 0; index < byteArray.length; index ++ ) {
-            byte = getAsset.result.compression.leaf_id & 0xff;
-            byteArray [ index ] = byte;
-            getAsset.result.compression.leaf_id = (getAsset.result.compression.leaf_id - byte) / 256 ;
-        }
-        for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
-        const swapAssetIdb58 = bs58.decode(swapAssetId);
-        arr = Array.prototype.slice.call(Buffer.from(swapAssetIdb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapTreeId58 = bs58.decode(swapTreeId);
-        arr = Array.prototype.slice.call(Buffer.from(swapTreeId58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapAssetRootb58 = bs58.decode(swapRoot);
-        arr = Array.prototype.slice.call(Buffer.from(swapAssetRootb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapAssetDatahashb58 = bs58.decode(swapDatahash); 
-        arr = Array.prototype.slice.call(Buffer.from(swapAssetDatahashb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapAssetCreatorhashb58 = bs58.decode(swapCreatorhash); 
-        arr = Array.prototype.slice.call(Buffer.from(swapAssetCreatorhashb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapAssetOwnerb58 = bs58.decode(swapAssetOwner); 
-        arr = Array.prototype.slice.call(Buffer.from(swapAssetOwnerb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        const swapDelegateb58 = bs58.decode(swapDelegate); 
-        arr = Array.prototype.slice.call(Buffer.from(swapDelegateb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-        for(index=0;index<byteArray.length;index ++){
-            byte = swapLeafId & 0xff;
-            byteArray [ index ] = byte;
-            swapLeafId = (swapLeafId - byte) / 256 ;
-        }
-        for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
-        uarray[counter++]=proof.length;
-        byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-        for(index=0;index<byteArray.length;index++){
-            byte = swapLamports & 0xff;
-            byteArray [ index ] = byte;
-            swapLamports = (swapLamports - byte) / 256 ;
-        }
-        for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
-        const swapTokenMintb58 = bs58.decode(swapTokenMint.toString());
-        arr = Array.prototype.slice.call(Buffer.from(swapTokenMintb58), 0);
-        for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
-        byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
-        for(index=0;index<byteArray.length;index++){
-            byte = swapTokens & 0xff;
-            byteArray [ index ] = byte;
-            swapTokens = (swapTokens - byte) / 256 ;
-        }
-        for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
-        let keys = [
-            { pubkey: new PublicKey(_data_.seller), isSigner: true, isWritable: true }, // 0
-            { pubkey: swapVaultPDA[0], isSigner: false, isWritable: true }, // 1
-            { pubkey: swapStatePDA[0], isSigner: false, isWritable: true }, // 2
-            { pubkey: treeAuthorityPDA, isSigner: false, isWritable: false }, // 3
-            { pubkey: new PublicKey(getAssetProof.result.tree_id), isSigner: false, isWritable: true }, // 4
-            { pubkey: delegate, isSigner: false, isWritable: true }, // 5
-            { pubkey: new PublicKey(this.BUBBLEGUM_PROGRAM_ID), isSigner: false, isWritable: false }, // 6
-            { pubkey: solanaAccountCompression.PROGRAM_ID, isSigner: false, isWritable: false }, // 7
-            { pubkey: solanaAccountCompression.SPL_NOOP_PROGRAM_ID, isSigner: false, isWritable: false }, // 8
-            { pubkey: SystemProgram.programId, isSigner: false, isWritable: false }, // 9
-            { pubkey: programStatePDA[0], isSigner: false, isWritable: false }, // 10
-            { pubkey: devTreasury, isSigner: false, isWritable: true }, // 11
-            { pubkey: mcDegensTreasury, isSigner: false, isWritable: true }, // 12
-        ];
-        for(let i=0;i<proof.length;i++){keys.push(proof[i]);}
-        const initializeSwapIx = new TransactionInstruction({programId:cNFTSwapProgramId,data:Buffer.from(uarray),keys:keys});
-        const msLookupTable = new PublicKey(this.CNFT_STATIC_ALT);     
-        const lookupTableAccount = await connection.getAddressLookupTable(msLookupTable).then((res)=>res.value);            
-        let instructions;
-        if(createTokenATA===true){instructions=[createTokenATAIx,initializeSwapIx];} 
-        else{instructions=[initializeSwapIx];}
-        // build transaction
-        const _tx_ = {};
-        if(typeof _data_.blink!="undefined"&&_data_.blink===true){
-            _tx_.serialize = true;              
-            _tx_.encode = true; 
-            _tx_.fees = false;   
+        if((proof+swapProof)>max_proofs){
+            const _error_ = {}
+            _error_.status="error";
+            _error_.message="combined proofs ("+(proof+swapProof)+") can not excede "+max_proofs;
+            return _error_;
         }
         else{
-            _tx_.serialize = false;              
-            _tx_.encode = false;
-            _tx_.fees = true;   
+            const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-vault")],cNFTSwapProgramId);
+            const swapStatePDA = PublicKey.findProgramAddressSync([Buffer.from("cNFT-swap"),new PublicKey(assetId).toBytes(),new PublicKey(swapAssetId).toBytes()],cNFTSwapProgramId);        
+            let tokenATA = null;
+            let createTokenATA = null;
+            let createTokenATAIx = null;
+            if(swapTokenMint.toString()!="11111111111111111111111111111111"){
+                let CNFT_TOKEN_PROGRAM = splToken.TOKEN_PROGRAM_ID;
+                response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
+                body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":swapTokenMint.toString()}})});
+                let getAsset = await response.json();
+                if(typeof getAsset.result.mint_extensions!="undefined"){CNFT_TOKEN_PROGRAM=splToken.TOKEN_2022_PROGRAM_ID;}
+                tokenATA = await splToken.getAssociatedTokenAddress(swapTokenMint,new PublicKey(_data_.seller),false,CNFT_TOKEN_PROGRAM,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
+                response = null;
+                response = await connection.getAccountInfo(tokenATA);
+                if(response==null){
+                    createTokenATA = true;
+                    createTokenATAIx = splToken.createAssociatedTokenAccountInstruction(new PublicKey(_data_.seller),tokenATA,new PublicKey(_data_.seller),swapTokenMint,CNFT_TOKEN_PROGRAM,splToken.ASSOCIATED_TOKEN_PROGRAM_ID);
+                }
+                else{createTokenATA=false;}
+            }
+            let totalSize = 1 + 1 + 32 + 32 + 32 + 32 + 8 + 32 + 32 + 32 + 32 + 32 + 32 + 32 + 8 + 1 + 8 + 32 + 8;        
+            let uarray = new Uint8Array(totalSize);
+            let counter = 0;    
+            uarray[counter++] = 0; // 0 = cnft_swap InitializeSwap instruction        
+            if(isSwap===true){uarray[counter++]=1;}else{uarray[counter++]=0;}        
+            let arr;
+            let byte;
+            let index;
+            let byteArray;
+            const assetIdb58 = bs58.decode(assetId);
+            arr = Array.prototype.slice.call(Buffer.from(assetIdb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}        
+            const rootb58 = bs58.decode(getAssetProof.result.root);
+            arr = Array.prototype.slice.call(Buffer.from(rootb58),0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}        
+            const datahashb58 = bs58.decode(getAsset.result.compression.data_hash);
+            arr = Array.prototype.slice.call(Buffer.from(datahashb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const creatorhashb58 = bs58.decode(getAsset.result.compression.creator_hash);
+            arr = Array.prototype.slice.call(Buffer.from(creatorhashb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
+            for (index = 0; index < byteArray.length; index ++ ) {
+                byte = getAsset.result.compression.leaf_id & 0xff;
+                byteArray [ index ] = byte;
+                getAsset.result.compression.leaf_id = (getAsset.result.compression.leaf_id - byte) / 256 ;
+            }
+            for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
+            const swapAssetIdb58 = bs58.decode(swapAssetId);
+            arr = Array.prototype.slice.call(Buffer.from(swapAssetIdb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapTreeId58 = bs58.decode(swapTreeId);
+            arr = Array.prototype.slice.call(Buffer.from(swapTreeId58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapAssetRootb58 = bs58.decode(swapRoot);
+            arr = Array.prototype.slice.call(Buffer.from(swapAssetRootb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapAssetDatahashb58 = bs58.decode(swapDatahash); 
+            arr = Array.prototype.slice.call(Buffer.from(swapAssetDatahashb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapAssetCreatorhashb58 = bs58.decode(swapCreatorhash); 
+            arr = Array.prototype.slice.call(Buffer.from(swapAssetCreatorhashb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapAssetOwnerb58 = bs58.decode(swapAssetOwner); 
+            arr = Array.prototype.slice.call(Buffer.from(swapAssetOwnerb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            const swapDelegateb58 = bs58.decode(swapDelegate); 
+            arr = Array.prototype.slice.call(Buffer.from(swapDelegateb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
+            for(index=0;index<byteArray.length;index ++){
+                byte = swapLeafId & 0xff;
+                byteArray [ index ] = byte;
+                swapLeafId = (swapLeafId - byte) / 256 ;
+            }
+            for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
+            uarray[counter++]=proof.length;
+            byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
+            for(index=0;index<byteArray.length;index++){
+                byte = swapLamports & 0xff;
+                byteArray [ index ] = byte;
+                swapLamports = (swapLamports - byte) / 256 ;
+            }
+            for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
+            const swapTokenMintb58 = bs58.decode(swapTokenMint.toString());
+            arr = Array.prototype.slice.call(Buffer.from(swapTokenMintb58), 0);
+            for(let i=0;i<arr.length;i++){uarray[counter++]=arr[i];}
+            byteArray = [0, 0, 0, 0, 0, 0, 0, 0];
+            for(index=0;index<byteArray.length;index++){
+                byte = swapTokens & 0xff;
+                byteArray [ index ] = byte;
+                swapTokens = (swapTokens - byte) / 256 ;
+            }
+            for(let i=0;i<byteArray.length;i++){uarray[counter++]=byteArray[i];}
+            let keys = [
+                { pubkey: new PublicKey(_data_.seller), isSigner: true, isWritable: true }, // 0
+                { pubkey: swapVaultPDA[0], isSigner: false, isWritable: true }, // 1
+                { pubkey: swapStatePDA[0], isSigner: false, isWritable: true }, // 2
+                { pubkey: treeAuthorityPDA, isSigner: false, isWritable: false }, // 3
+                { pubkey: new PublicKey(getAssetProof.result.tree_id), isSigner: false, isWritable: true }, // 4
+                { pubkey: delegate, isSigner: false, isWritable: true }, // 5
+                { pubkey: new PublicKey(this.BUBBLEGUM_PROGRAM_ID), isSigner: false, isWritable: false }, // 6
+                { pubkey: solanaAccountCompression.PROGRAM_ID, isSigner: false, isWritable: false }, // 7
+                { pubkey: solanaAccountCompression.SPL_NOOP_PROGRAM_ID, isSigner: false, isWritable: false }, // 8
+                { pubkey: SystemProgram.programId, isSigner: false, isWritable: false }, // 9
+                { pubkey: programStatePDA[0], isSigner: false, isWritable: false }, // 10
+                { pubkey: devTreasury, isSigner: false, isWritable: true }, // 11
+                { pubkey: mcDegensTreasury, isSigner: false, isWritable: true }, // 12
+            ];
+            for(let i=0;i<proof.length;i++){keys.push(proof[i]);}
+            const initializeSwapIx = new TransactionInstruction({programId:cNFTSwapProgramId,data:Buffer.from(uarray),keys:keys});
+            const msLookupTable = new PublicKey(this.CNFT_STATIC_ALT);     
+            const lookupTableAccount = await connection.getAddressLookupTable(msLookupTable).then((res)=>res.value);            
+            let instructions;
+            if(createTokenATA===true){instructions=[createTokenATAIx,initializeSwapIx];} 
+            else{instructions=[initializeSwapIx];}
+            // build transaction
+            const _tx_ = {};
+            if(typeof _data_.blink!="undefined"&&_data_.blink===true){
+                _tx_.serialize = true;              
+                _tx_.encode = true; 
+                _tx_.fees = false;   
+            }
+            else{
+                _tx_.serialize = false;              
+                _tx_.encode = false;
+                _tx_.fees = true;   
+            }
+            if(typeof _data_.compute=="undefined"||_data_.compute===true){_tx_.compute=true;}else{_tx_.compute=false;} 
+            _tx_.rpc = _data_.rpc;                     
+            _tx_.account = _data_.seller;           
+            _tx_.instructions = instructions;   
+            _tx_.signers = false;                
+            _tx_.table = [lookupTableAccount];  
+            _tx_.tolerance = 1.2;                     
+            _tx_.priority = _data_.priority;         
+            return await this.tx(_tx_);
+            // build transaction
         }
-        if(typeof _data_.compute=="undefined"||_data_.compute===true){_tx_.compute=true;}else{_tx_.compute=false;} 
-        _tx_.rpc = _data_.rpc;                     
-        _tx_.account = _data_.seller;           
-        _tx_.instructions = instructions;   
-        _tx_.signers = false;                
-        _tx_.table = [lookupTableAccount];  
-        _tx_.tolerance = 1.2;                     
-        _tx_.priority = _data_.priority;         
-        return await this.tx(_tx_);
-        // build transaction
     }
     catch(err){
         const _error_ = {}
