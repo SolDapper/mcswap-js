@@ -292,7 +292,7 @@ class mcswap {
         if(_data_.seller==_data_.buyer){
             const _error_ = {}
             _error_.status="error";
-            _error_.message="buy/sell wallet error";
+            _error_.message="buy sell wallet conflict";
             return _error_;
         }
 
@@ -411,7 +411,7 @@ class mcswap {
         if(swapState!=null){
             const _error_ = {}
             _error_.status="error";
-            _error_.message="A pending contract for these two parties already exist!";
+            _error_.message="pending contract for these two parties already exist";
             return _error_;
         }
 
@@ -3614,7 +3614,7 @@ class mcswap {
             const SPL_FEE_PROGRAM_STATE=await connection.getAccountInfo(SPL_FEE_PROGRAM_PDA[0]).catch(function(){});
             const decodedData=this.PROGRAM_STATE_SPL.decode(SPL_FEE_PROGRAM_STATE.data);
             const chips = parseInt(new BN(decodedData.fee_chips,10,"le").toString());
-            return Number.parseFloat(chips/1000000000).toFixed(9)+" PIKL";
+            return "PIKL: "+Number.parseFloat(chips/1000000000).toFixed(9);
         }
         else{
             let PROGRAM;
@@ -3644,7 +3644,7 @@ class mcswap {
             const FEE_PROGRAM_STATE=await connection.getAccountInfo(FEE_PROGRAM_PDA[0]).catch(function(){});
             const decodedData=STATE.decode(FEE_PROGRAM_STATE.data);
             const lamports = parseInt(new BN(decodedData.fee_lamports,10,"le").toString());
-            return Number.parseFloat(lamports/1000000000).toFixed(9)+" SOL";
+            return "SOL: "+Number.parseFloat(lamports/1000000000).toFixed(9);
         }
     }
 }
