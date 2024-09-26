@@ -698,16 +698,12 @@ class mcswap {
         }
         // programState
         // swapVaultPDA
-        const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("swap-vault")], new PublicKey(this.MCSWAP_SPL_PROGRAM));
+        const swapVaultPDA = PublicKey.findProgramAddressSync([Buffer.from("swap-vault")],new PublicKey(this.MCSWAP_SPL_PROGRAM));
         // swapVaultPDA
         // swapState
-        const SPL_STATE_PDA = PublicKey.findProgramAddressSync([Buffer.from("swap-state"), user_a_key.toBytes(), user_b_key.toBytes()], new PublicKey(this.MCSWAP_SPL_PROGRAM));
-        let swapState = null;
-        swapState = await connection.getAccountInfo(SPL_STATE_PDA[0]).catch(function(){
-            _response_.status="error";
-            _response_.message="Contract Not Found!";
-            return _response_;
-        });
+        const SPL_STATE_PDA = PublicKey.findProgramAddressSync([Buffer.from("swap-state"),user_a_key.toBytes(),user_b_key.toBytes()],new PublicKey(this.MCSWAP_SPL_PROGRAM));
+        let swapState=null;
+        swapState = await connection.getAccountInfo(SPL_STATE_PDA[0]);
         let initializer = null;
         let token1Mint = null;
         let token1Amount = null;
@@ -720,6 +716,12 @@ class mcswap {
         let token3Amount = null;
         let token4Mint = null;
         let token4Amount = null;
+        if(swapState==null){
+            const _error_ = {}
+            _error_.status="error";
+            _error_.message="invalid seller or buyer";
+            return _error_;
+        }
         const encodedSwapStateData = swapState.data;
         const decodedSwapStateData = this.SWAP_SPL_STATE.decode(encodedSwapStateData);
         initializer = new PublicKey(decodedSwapStateData.initializer);
