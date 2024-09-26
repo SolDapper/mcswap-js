@@ -719,7 +719,7 @@ class mcswap {
         if(swapState==null){
             const _error_ = {}
             _error_.status="error";
-            _error_.message="invalid seller or buyer";
+            _error_.message="only the buyer can execute.. dummy";
             return _error_;
         }
         const encodedSwapStateData = swapState.data;
@@ -1015,6 +1015,13 @@ class mcswap {
             _response_.message="Contract Not Found!";
             return _response_;
         });
+
+        if(swapState==null){
+            const _error_ = {}
+            _error_.status="error";
+            _error_.message="only the seller can cancal.. dummy";
+            return _error_;
+        }
 
         let response = null;
         let meta_data = null;
