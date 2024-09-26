@@ -1019,7 +1019,7 @@ class mcswap {
         if(swapState==null){
             const _error_ = {}
             _error_.status="error";
-            _error_.message="only the seller can cancal.. dummy";
+            _error_.message="only the seller can cancel.. dummy";
             return _error_;
         }
 
