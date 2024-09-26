@@ -288,9 +288,18 @@ class mcswap {
         } 
         if(typeof _data_.priority=="undefined"||_data_.priority===false){_data_.priority=this.PRIORITY;}
         const _response_ = {};
+
+        if(_data_.seller==_data_.buyer){
+            const _error_ = {}
+            _error_.status="error";
+            _error_.message="buy/sell wallet error";
+            return _error_;
+        }
+
         const connection = new Connection(_data_.rpc, "confirmed");
         const seller = new PublicKey(_data_.seller);
         const buyer = new PublicKey(_data_.buyer);
+
         let meta_data;
         let response;
         let token1Mint = "11111111111111111111111111111111";
