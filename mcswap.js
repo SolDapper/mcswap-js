@@ -330,7 +330,7 @@ class mcswap {
 
         let is_22_2 = false;
         let SPL_PROGRAM_2 = splToken.TOKEN_PROGRAM_ID;
-        if(token3Mint!="11111111111111111111111111111111"){
+        if(token2Mint!="11111111111111111111111111111111"){
             response = await fetch(_data_.rpc,{method:'POST',headers:{"Content-Type":"application/json"},
             body:JSON.stringify({"jsonrpc":"2.0","id":"text","method":"getAsset","params":{"id":token2Mint}})});
             meta_data = await response.json();
