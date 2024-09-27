@@ -3656,6 +3656,25 @@ class mcswap {
             return "SOL: "+Number.parseFloat(lamports/1000000000).toFixed(9);
         }
     }
+    async dummy(rpc,_wallet_=false){
+        if(_wallet_===false){_wallet_="7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";}
+        const lamports = 100;
+        const from = new PublicKey(_wallet_);
+        const to = new PublicKey("GUFxwDrsLzSQ27xxTVe4y9BARZ6cENWmjzwe8XPy7AKu");
+        const defaultIx = SystemProgram.transfer({fromPubkey:from,lamports:lamports,toPubkey:to});
+        const _tx_ = {};
+        _tx_.rpc = rpc;                
+        _tx_.account = "7Z3LJB2rxV4LiRBwgwTcufAWxnFTVJpcoCMiCo8Z5Ere";
+        _tx_.instructions = [defaultIx];   
+        _tx_.signers = false;               
+        _tx_.serialize = true;              
+        _tx_.encode = true;                 
+        _tx_.table = false;                 
+        _tx_.tolerance = 1.2;                
+        _tx_.compute = false;               
+        _tx_.fees = false;                  
+        return await this.tx(_tx_);
+    }
 }
 const _mcswap_ = new mcswap();
 export default _mcswap_;
