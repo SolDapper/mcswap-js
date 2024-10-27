@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/McDegens-DAO/mcswap-js.git"
+    "url": "git+https://github.com/SolDapper/mcswap-js.git"
   },
   "keywords": [
     "solana","trustless","otc"
@@ -17,9 +17,9 @@
   "author": "@SolDapper",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/McDegens-DAO/mcswap-js/issues"
+    "url": "https://github.com/SolDapper/mcswap-js/issues"
   },
-  "homepage": "https://github.com/McDegens-DAO/mcswap-js#readme",
+  "homepage": "https://github.com/SolDapper/mcswap-js#readme",
   "dependencies": {
     "@solana/buffer-layout": "^4.0.1",
     "@solana/spl-account-compression": "^0.2.1",
